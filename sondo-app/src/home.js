@@ -50,7 +50,7 @@ function MallCard({ imgUrl, name }) {
   return (
     <div className="mall-card">
       <img src={imgUrl} alt={name} />
-      <p>{name}</p>
+      <p>{name}</p> 
     </div>
   );
 }
