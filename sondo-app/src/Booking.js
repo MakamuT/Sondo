@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./BookingPage.css";
+import "./Booking.css";
 
 const BookingPage = () => {
   // Sample data for available mobility aids
