@@ -74,7 +74,7 @@ function Register() {
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                 /><br/>
-                <label>password</label>
+                <label>password  </label>
                 <input
                     type='password'
                     className='form'
