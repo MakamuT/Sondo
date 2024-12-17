@@ -3,6 +3,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from './firebase';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import './style.css';
 
 
 function Register() {
@@ -39,8 +40,7 @@ function Register() {
 
     return (
         <form onSubmit={handleRegister}>
-            <h3>Register</h3>
-
+            <h1>Register</h1>
             <div className="container">
                 <label>Name</label>
                 <input 

@@ -38,9 +38,8 @@ function Login() {
                     placeholder='Enter Email'
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                />
-            </div>
-            <div className='container'>
+                /><br/>
+            
                 <label>password</label>
                 <input
                     type='password'
@@ -50,7 +49,6 @@ function Login() {
                     onChange={(e) => setPassword(e.target.value)}
                 />
             </div>
-
             <div>
                 <button type='submit' className="btn">Submit</button>
             </div>
