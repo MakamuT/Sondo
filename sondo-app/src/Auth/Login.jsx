@@ -52,7 +52,7 @@ function Login() {
             <div>
                 <button type='submit' className="btn">Submit</button>
             </div>
-            <p>Don't have an account click here to <Link to="/register">Register</Link></p>
+            <p>Don't have an account click here to <Link to="/register" className='link'>Register</Link></p>
             </form>
     )
 }
