@@ -1,6 +1,6 @@
 import './App.css';
 
-function App() {
+function Home() {
   return (
     <div className="App">
       {/******************* Header ********************/}
@@ -55,4 +55,4 @@ function MallCard({ imgUrl, name }) {
   );
 }
 
-export default App;
+export default Home;
