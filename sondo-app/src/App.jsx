@@ -2,7 +2,8 @@ import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./Auth/Login";
 import Register from "./Auth/Register";
-import Profile from "./Auth/Profile";
+import About from "./About";
+import Booking from './booking';
 import Confirmation from "./confirmation";
 import Home from "./home";
 import { ToastContainer } from "react-toastify";
@@ -19,7 +20,7 @@ function App() {
               <Route path="/home" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/profile" element={<Profile />} />
+              <Route path="/about" element={<About />} />
               <Route path="/confirmation" element={<Confirmation />} />
               {/* Fallback for undefined routes */}
               <Route path="*" element={<h1>404 - Page Not Found</h1>} />

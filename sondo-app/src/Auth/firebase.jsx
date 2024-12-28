@@ -1,16 +1,16 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import {getAuth} from 'firebase/auth';
+import {getFirestore} from 'firebase/firestore';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBPZKmuLpi2-uYPe2EAvuRc4bjdjaMGxws",
-  authDomain: "test-b2434.firebaseapp.com",
-  databaseURL: "https://test-b2434-default-rtdb.firebaseio.com",
-  projectId: "test-b2434",
-  storageBucket: "test-b2434.firebasestorage.app",
-  messagingSenderId: "874534405127",
-  appId: "1:874534405127:web:5e81d8eaa6b733823856a2",
+  apiKey: "AIzaSyARXw1vcUTplDNLdndSSfoeXyi-xlCjLwo",
+  authDomain: "sondo-dc030.firebaseapp.com",
+  projectId: "sondo-dc030",
+  storageBucket: "sondo-dc030.firebasestorage.app",
+  messagingSenderId: "820810975062",
+  appId: "1:820810975062:web:f0339a76103d5591c9b8f7",
 };
 
 //Initialize Firebase
@@ -21,3 +21,4 @@ const auth = getAuth(app);
 // Export the auth object
 export { auth };
 export default app;
+export const db = getFirestore(app);
