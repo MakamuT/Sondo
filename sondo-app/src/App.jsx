@@ -1,10 +1,13 @@
+// eslint-disable-next-line no-unused-vars
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./Auth/Login";
+import LandingPage from "./Landingpage";
 import Register from "./Auth/Register";
 import Profile from "./Auth/Profile";
 import Confirmation from "./confirmation";
 import Home from "./home";
+import BookingPage from "./booking";
 import { ToastContainer } from "react-toastify";
 
 function App() {
@@ -15,12 +18,14 @@ function App() {
           <div className="auth-inner">
             <Routes>
               {/* Default route for "/" */}
-              <Route path="/" element={<Navigate to="/login" />} />
-              <Route path="/home" element={<Home />} />
+              <Route path="/" element={<LandingPage/>} />
               <Route path="/login" element={<Login />} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/booking" element={<BookingPage />} />
               <Route path="/register" element={<Register />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/confirmation" element={<Confirmation />} />
+
               {/* Fallback for undefined routes */}
               <Route path="*" element={<h1>404 - Page Not Found</h1>} />
             </Routes>
