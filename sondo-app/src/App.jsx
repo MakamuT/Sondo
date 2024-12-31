@@ -4,7 +4,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./Auth/Login";
 import LandingPage from "./Landingpage";
 import Register from "./Auth/Register";
-import Profile from "./Auth/Profile";
+import About from "./About";
+import Booking from './booking';
 import Confirmation from "./confirmation";
 import Home from "./home";
 import BookingPage from "./booking";
@@ -23,7 +24,7 @@ function App() {
               <Route path="/home" element={<Home />} />
               <Route path="/booking" element={<BookingPage />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/profile" element={<Profile />} />
+              <Route path="/about" element={<About />} />
               <Route path="/confirmation" element={<Confirmation />} />
 
               {/* Fallback for undefined routes */}

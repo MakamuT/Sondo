@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from './firebase';
+import { auth, db } from './firebase';
+import { setDoc, doc } from 'firebase/firestore';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import './style.css';
@@ -27,6 +28,7 @@ function Register() {
                 });
             }
             console.log("User registered successfully");
+            window.location.href = "/login";
             toast.success("User registered successfully", {
                 position: "top-center",
             });

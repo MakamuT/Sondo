@@ -5,15 +5,17 @@ body{
 h1{
     color: #f1c40f;
     font-size: 70px;
-    font-weight: 700;
-    margin-top: 20px;
+    font-weight: 900;
+    margin-left: 33rem;
+    margin-top: -90px;
     text-align: center;
 }
 .container{
     border: 1px solid #f1c40f;
     border-radius: 10px;
     font-size: 20px;
-    margin-left: 80px;
+    margin-left: 30rem;
+    margin-top: 40px;
     padding: 20px;
 }
 label{
@@ -37,7 +39,7 @@ label{
     background-color: #f1c40f;
     border: none;
     font-size: 20px;
-    margin-left: 40%;
+    margin-left: 40rem;
     margin-top: 20px;
     padding: 10px;
     text-align: center;
@@ -45,9 +47,10 @@ label{
 }
 p{
     font-size: 20px;
-    margin-left: 20px;
+    margin-left: 30rem;
     margin-top: 20px;
 }
 .link{
     color: #f1c40f;
+    font-weight: 800;
 }
