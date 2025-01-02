@@ -1,10 +1,10 @@
-import './App.css';
+import './home.css';
 
 function Home() {
   return (
-    <div className="App">
-      {/******************* Header ********************/}
-      <header className="header">
+
+    <div className='container'>
+         <header className="header">
         <div className="logo">
           <div className="circle"></div>
           <span>Sondo</span>
@@ -16,6 +16,8 @@ function Home() {
           <a href="#">FAQ</a>
         </nav>
       </header>
+      <div className="home">
+      {/******************* Header ********************/}
 
       {/********** Search Section ***************/}
       <div className="search-container">
@@ -26,7 +28,7 @@ function Home() {
         </div>
       </div>
 
-      {/********** Tabs **************/}
+      {/********** Filter Tabs **************/}
       <div className="tabs">
         <button>All</button>
         <button>Wheelchair</button>
@@ -43,6 +45,8 @@ function Home() {
         </div>
       </div>
     </div>
+    </div>
+    
   );
 }
 
