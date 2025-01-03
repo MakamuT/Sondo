@@ -18,21 +18,21 @@ body {
 }
 
 /* Header ***/
-.header {
+/* .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   color: black;
   padding: 1rem 2rem;
-}
+} */
 
 .logo {
   font-size: 1.5rem;
   font-weight: bold;
 }
-.navbar{
+/* .navbar{
   background-color: hsla(0, 0%, 100%, 0);
-}
+} */
 .navbar ul {
   list-style: none;
   display: flex;

@@ -1,20 +1,11 @@
 /* LandingPage.js */
 import React from "react";
 import "./LandingPage.css";
-
+import Header from "./header";
 function LandingPage() {
   return (
     <div className="container">
-      <header className="header">
-        <div className="logo">Sondo</div>
-        <nav className="navbar">
-          <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#testimonials">Testimonials</a></li>
-            <li><a href="#faq">FAQ</a></li>
-          </ul>
-        </nav>
-      </header>
+      <Header />
       <main className="main-content">
         <div className="image-container">
           <img className="hero-image"
