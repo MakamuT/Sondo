@@ -1,22 +1,12 @@
-import './App.css';
-
+import './home.css';
+import Header from './header';
 function Home() {
   return (
-    <div className="App">
-      {/******************* Header ********************/}
-      <header className="header">
-        <div className="logo">
-          <div className="circle"></div>
-          <span>Sondo</span>
-        </div>
-        <nav>
-          <a href="#">Booking</a>
-          <a href="#">About</a>
-          <a href="#">Contact</a>
-          <a href="#">FAQ</a>
-        </nav>
-      </header>
 
+    <div className='container'>
+        {/******************* Header ********************/}
+        <Header />
+      <div className="home">
       {/********** Search Section ***************/}
       <div className="search-container">
         <div className="search-box">
@@ -26,7 +16,7 @@ function Home() {
         </div>
       </div>
 
-      {/********** Tabs **************/}
+      {/********** Filter Tabs **************/}
       <div className="tabs">
         <button>All</button>
         <button>Wheelchair</button>
@@ -43,6 +33,8 @@ function Home() {
         </div>
       </div>
     </div>
+    </div>
+    
   );
 }
 

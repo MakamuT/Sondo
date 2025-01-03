@@ -1,0 +1,173 @@
+/* General */
+body {
+  margin: auto;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  color: #333;
+  /* background-color: #f7f7f7; */
+  line-height: 1.6;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100vw;
+  margin: auto;
+  padding: auto;
+}
+
+/* Header ***/
+/* .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: black;
+  padding: 1rem 2rem;
+} */
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+/* .navbar{
+  background-color: hsla(0, 0%, 100%, 0);
+} */
+.navbar ul {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar ul li a {
+  color: black;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.navbar ul li a:hover {
+  text-decoration: underline;
+}
+
+/* Main Content ***/
+.main-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  text-align: center;
+  flex-grow: 1;
+  /* background-image: url("https://images.unsplash.com/photo-1585244129648-5dc1f9cd9d7a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"); */
+  /* background-color: #fff; */
+  background-size:cover;
+  background-repeat: no-repeat;
+}
+
+.image-container {
+  max-width: 100%;
+  margin-bottom: 2rem;
+}
+
+.hero-image {
+  max-width: 100%;
+  height: 50vh;
+  border-radius: 10px;
+  /* background-image: url("https://images.unsplash.com/photo-1585244129648-5dc1f9cd9d7a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"); */
+}
+
+.text-content h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #333;
+  
+}
+
+.text-content p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  color: #555;
+}
+
+.button-group {
+  display: flex;
+  justify-content:center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.cta-button {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.cta-button.book {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.cta-button.book:hover {
+  background-color: #45a049;
+  transform: scale(1.05);
+}
+
+.cta-button.find {
+  background-color: #2196F3;
+  color: white;
+}
+
+.cta-button.find:hover {
+  background-color: #1e87d6;
+  transform: scale(1.05);
+}
+
+/* Footer ***/
+.footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.9rem;
+}
+
+.footer p {
+  margin: 0;
+}
+
+/* Responsive Design ***/
+@media (min-width: 768px) {
+  .main-content {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4rem 2rem;
+    text-align: left;
+  }
+
+  .image-container {
+    flex: 1;
+    margin-right: 2rem;
+  }
+
+  .text-content {
+    flex: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .nav ul {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
