@@ -175,3 +175,9 @@ button{
   font-weight: bold;
   text-align: center;
 }
+
+.results{
+  background-color: white;
+  padding: 20px;
+  margin: 20px;
+}
