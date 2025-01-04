@@ -4,9 +4,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./Auth/Login";
 import LandingPage from "./Landingpage";
 import Register from "./Auth/Register";
-// import About from "./About";
-import Booking from './booking';
-import Confirmation from "./confirmation";
+import Booking from './Booking/booking';
+import Confirmation from "./Booking/Confirmation";
 import Home from "./home";
 import BookingPage from "./booking";
 import { ToastContainer } from "react-toastify";
@@ -24,6 +23,7 @@ function App() {
               <Route path="/home" element={<Home />} />
               <Route path="/booking" element={<BookingPage />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/booking" element={<Booking />} />
               <Route path="/confirmation" element={<Confirmation />} />
 
               {/* Fallback for undefined routes */}
