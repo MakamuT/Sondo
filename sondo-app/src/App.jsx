@@ -7,7 +7,7 @@ import Register from "./Auth/Register";
 import Booking from './Booking/booking';
 import Confirmation from "./Booking/Confirmation";
 import Home from "./home";
-import BookingPage from "./booking";
+import BookingPage from "./Booking/booking";
 import { ToastContainer } from "react-toastify";
 
 function App() {
@@ -23,7 +23,6 @@ function App() {
               <Route path="/home" element={<Home />} />
               <Route path="/booking" element={<BookingPage />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/booking" element={<Booking />} />
               <Route path="/confirmation" element={<Confirmation />} />
 
               {/* Fallback for undefined routes */}
