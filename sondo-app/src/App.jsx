@@ -2,12 +2,11 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./Auth/Login";
-import LandingPage from "./Landingpage";
+import LandingPage from "./LandingPage";
 import Register from "./Auth/Register";
-import Booking from './Booking/booking';
+import BookingPage from './Booking/booking';
 import Confirmation from "./Booking/Confirmation";
 import Home from "./home";
-import BookingPage from "./Booking/booking";
 import { ToastContainer } from "react-toastify";
 
 function App() {

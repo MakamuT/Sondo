@@ -2,69 +2,87 @@ import { useState, useEffect } from "react";
 import "./Booking.css";
 import { db } from "../Auth/firebase";
 import { doc, updateDoc, collection, getDocs } from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { toast } from "react-toastify";
 
 const BookingPage = () => {
-  const [filters, setFilters] = useState("All");
   const [mobilityAids, setMobilityAids] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-   const fetchMobilityAids = async () => {
-  try {
-    const querySnapshot = await getDocs(collection(db, "mobilityAids"));
-    const items = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-    setMobilityAids(items);
-    setLoading(false);
-  } catch (error) {
-    console.error("Error fetching mobility aids:", error); 
-  }
-};
-
+    // Fetch mobility aids
     fetchMobilityAids();
+
+    // Fetch authenticated user details
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setUser({
+          uid: currentUser.uid,
+          name: currentUser.displayName || "Guest",
+          email: currentUser.email,
+        });
+      } else {
+        setUser(null);
+      }
+    });
+
+    return () => unsubscribe();
   }, []);
 
-  const wheelchairs = [
-    { id: 1, name: "Wheelchair 1", available: true },
-    { id: 2, name: "Wheelchair 2", available: false },
-    { id: 3, name: "Wheelchair 3", available: true },
-  ];
-  // Filter function
-  const getFilteredItems = () => {
-    if (filters === "Wheelchair") return wheelchairs;
-    return [...wheelchairs, ...crutches];
+  const bookMobilityAid = async (item) => {
+    if (!user) {
+      toast.error("Please log in to make a booking", { position: "top-center" });
+      return;
+    }
+
+    const itemRef = doc(db, "mobilityAids", item.id);
+    try {
+      await updateDoc(itemRef, {
+        available: false,
+        bookedBy: {
+          uid: user.uid,
+          name: user.name,
+          email: user.email,
+        },
+        bookedAt: new Date(),
+      });
+      setMobilityAids((prev) =>
+        prev.map((aid) =>
+          aid.id === item.id
+            ? { ...aid, available: false, bookedBy: user }
+            : aid
+        )
+      );
+      toast.success("Booking successful", { position: "top-center" });
+    } catch (error) {
+      console.error("Error booking wheelchair:", error);
+      toast.error("Failed to book wheelchair", { position: "bottom-center" });
+    }
   };
 
-  const filteredItems = getFilteredItems();
-  
-  const handleBook = async (id) => {
-  console.log("Booking ID:", id);
-  try {
-    const itemRef = doc(db, "mobilityAids", String(id));
-    await updateDoc(itemRef, {
-      available: false,
-    });
-    // Optimistically update the UI
-    setMobilityAids((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id ? { ...item, available: false } : item
-      )
-    );
+  const fetchMobilityAids = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "mobilityAids"));
+      const items = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setMobilityAids(items);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching mobility aids:", error);
+      toast.error("Failed to load data");
+    }
+  };
 
-    toast.success("Booking successful!",{
-      position: "top-center",
-    });
-  } catch (error) {
-    console.error("Error booking mobility aid");
-    toast.error("Failed to book. Please try again.",{
-      position: "bottom-center",
-    });
-  }
-};
+  // Filter only wheelchairs
+  const wheelchairItems = mobilityAids.filter((item) => item.type === "Wheelchair");
 
+  const BookingList = () => {
+  // Sample data for the list of items
+  const [items, setItems] = useState([
+    { id: 1, name: "Wheelchair A", available: true },
+    { id: 2, name: "Wheelchair B", available: true },
+  ])
 
   return (
     <div className="booking-page">
@@ -78,53 +96,41 @@ const BookingPage = () => {
         </nav>
       </header>
 
-      {/**** Hero Section *****/}
       <section className="hero">
-        <img
-          src="https://via.placeholder.com/250" // Replace with actual mall image
-          alt="Mall of Africa"
-          className="mall-image"
-        />
-        <h2>Mall of Africa</h2>
+        <h2>Available Wheelchairs</h2>
+        {user ? (
+          <p>
+            Logged in as <strong>{user.name}</strong> ({user.email})
+          </p>
+        ) : (
+          <p>Please log in to book a wheelchair.</p>
+        )}
       </section>
 
-      {/* Filters */}
-      <div className="filters">
-        <button
-          className={`filter-button ${filters === "All" ? "active" : ""}`}
-          onClick={() => setFilters("All")}
-        >
-          All
-        </button>
-        <button
-          className={`filter-button ${filters === "Wheelchair" ? "active" : ""}`}
-          onClick={() => setFilters("Wheelchair")}
-        >
-          Wheelchair
-        </button>
-        <button
-          className={`filter-button ${filters === "Crutches" ? "active" : ""}`}
-          onClick={() => setFilters("Crutches")}
-        >
-          Crutches
-        </button>
+      <div className="wheelchair-list">
+        {loading ? (
+          <p>Loading wheelchairs...</p>
+        ) : wheelchairItems.length > 0 ? (
+          wheelchairItems.map((item) => (
+            <div key={item.id} className="list-item">
+              <span>{item.name}</span>
+              {item.available ? (
+                <button
+                  className="book-button"
+                  onClick={() => bookMobilityAid(item)}
+                >
+                  Book
+                </button>
+              ) : (
+                <span className="unavailable">Unavailable</span>
+              )}
+            </div>
+          ))
+        ) : (
+          <p>No wheelchairs available at the moment.</p>
+        )}
       </div>
 
-      {/**** Placeholder List ****/}
-      <div className="placeholder-list">
-        {filteredItems.map((item) => (
-          <div key={item.id} className="list-item">
-            <span>{item.name}</span>
-            {item.available ? (
-              <button className="book-button" onClick={() => handleBook(item.id)}>Book</button>
-            ) : (
-              <span className="unavailable">Unavailable</span>
-            )}
-          </div>
-        ))}
-      </div>
-
-      {/****** Footer *****/}
       <footer className="footer">
         <p>&copy; 2024 Sondo. All rights reserved.</p>
       </footer>
