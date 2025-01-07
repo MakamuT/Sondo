@@ -77,13 +77,6 @@ const BookingPage = () => {
   // Filter only wheelchairs
   const wheelchairItems = mobilityAids.filter((item) => item.type === "Wheelchair");
 
-  const BookingList = () => {
-  // Sample data for the list of items
-  const [items, setItems] = useState([
-    { id: 1, name: "Wheelchair A", available: true },
-    { id: 2, name: "Wheelchair B", available: true },
-  ])
-
   return (
     <div className="booking-page">
       <header className="header">
