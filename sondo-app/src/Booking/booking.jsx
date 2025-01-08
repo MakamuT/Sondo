@@ -40,12 +40,14 @@ const BookingPage = () => {
 
       {/**** Hero Section *****/}
       <section className="hero">
-        <img
-          src="https://via.placeholder.com/250" // Replace with actual mall image
-          alt="Mall of Africa"
-          className="mall-image"
-        />
-        <h2>Mall of Africa</h2>
+        <h2>Available Wheelchairs</h2>
+        {user ? (
+          <p>
+            Logged in as <strong>{user.name}</strong> ({user.email})
+          </p>
+        ) : (
+          <p>Please log in to book a wheelchair.</p>
+        )}
       </section>
 
       {/**** Filters ****/}
