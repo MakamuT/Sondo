@@ -6,9 +6,15 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { toast } from "react-toastify";
 
 const BookingPage = () => {
-  const [mobilityAids, setMobilityAids] = useState([]);
+  const [mobilityAids, setMobilityAids] = useState([
+    { id: "1", name: "Standard Wheelchair", type: "Wheelchair", available: true },
+    { id: "2", name: "Electric Wheelchair", type: "Wheelchair", available: true },
+    { id: "3", name: "Folding Wheelchair", type: "Wheelchair", available: false },
+  ]);
+
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+  const [availableWheelchairs, setAvailableWheelchairs] = useState([]);
 
   useEffect(() => {
     // Fetch mobility aids
@@ -31,9 +37,19 @@ const BookingPage = () => {
     return () => unsubscribe();
   }, []);
 
+ useEffect(() => {
+  const available = mobilityAids.filter(
+    (item) => item.type === "Wheelchair" && item.available
+  );
+  setAvailableWheelchairs(available);
+}, [mobilityAids]);
+
+
   const bookMobilityAid = async (item) => {
     if (!user) {
-      toast.error("Please log in to make a booking", { position: "top-center" });
+      toast.error("Please log in to make a booking", {
+        position: "top-center",
+      });
       return;
     }
 
@@ -65,7 +81,10 @@ const BookingPage = () => {
   const fetchMobilityAids = async () => {
     try {
       const querySnapshot = await getDocs(collection(db, "mobilityAids"));
-      const items = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      const items = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
       setMobilityAids(items);
       setLoading(false);
     } catch (error) {
@@ -74,8 +93,24 @@ const BookingPage = () => {
     }
   };
 
-  // Filter only wheelchairs
-  const wheelchairItems = mobilityAids.filter((item) => item.type === "Wheelchair");
+  const renderMobilityAids = () => {
+    return (
+      <div className="wheelchair-list">
+        {loading ? (
+          <p>Loading wheelchairs...</p>
+        ) : availableWheelchairs.length > 0 ? (
+          availableWheelchairs.map((item) => (
+            <div key={item.id} className="list-item">
+              <span>{item.name}</span>
+              <button onClick={() => bookMobilityAid(item)}>Book</button>
+            </div>
+          ))
+        ) : (
+          <p>No available wheelchairs at the moment.</p>
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className="booking-page">
@@ -100,29 +135,8 @@ const BookingPage = () => {
         )}
       </section>
 
-      <div className="wheelchair-list">
-        {loading ? (
-          <p>Loading wheelchairs...</p>
-        ) : wheelchairItems.length > 0 ? (
-          wheelchairItems.map((item) => (
-            <div key={item.id} className="list-item">
-              <span>{item.name}</span>
-              {item.available ? (
-                <button
-                  className="book-button"
-                  onClick={() => bookMobilityAid(item)}
-                >
-                  Book
-                </button>
-              ) : (
-                <span className="unavailable">Unavailable</span>
-              )}
-            </div>
-          ))
-        ) : (
-          <p>No wheelchairs available at the moment.</p>
-        )}
-      </div>
+      {/* Render the wheelchair list */}
+      {renderMobilityAids()}
 
       <footer className="footer">
         <p>&copy; 2024 Sondo. All rights reserved.</p>
