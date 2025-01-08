@@ -41,56 +41,66 @@ function Register() {
     }
 
     return (
-        <form onSubmit={handleRegister}>
-            <h1>Register</h1>
-            <div className="container">
-                <label>Name</label>
-                <input 
-                    type="text"
-                    className="form"
-                    placeholder='Enter Name'
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                /><br/>
-                <label>Surname</label>
-                <input
-                    type="text"
-                    className='form'
-                    placeholder='Enter Surname'
-                    value={surname}
-                    onChange={(e) => setSurname(e.target.value)}
-                /><br/>
-                <label>Email address</label>
-                <input 
-                    type="email"
-                    className="form"
-                    placeholder='Enter Email'
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                /><br/>
-                <label>Phone</label>
-                <input
-                    type='text'
-                    className='form'
-                    placeholder='Enter Phone'
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                /><br/>
-                <label>password  </label>
-                <input
-                    type='password'
-                    className='form'
-                    placeholder='Enter password'
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-           </div>
-           
-            <div>
-                <button type='submit' className="btn">Submit</button>
-            <p>Already have an account click here to <Link to='/login' className='link'>Login</Link></p>
-            </div>
-        </form>
-    )
+        <div className="container">
+            <h1>Register</h1><br/>
+      <form onSubmit={handleRegister}>
+          <label>Name</label>
+          <br />
+          <input
+            type="text"
+            className="form"
+            placeholder="Enter Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <br />
+          <label>Surname</label><br/>          
+          <input
+            type="text"
+            className="form"
+            placeholder="Enter Surname"
+            value={surname}
+            onChange={(e) => setSurname(e.target.value)}
+          />
+          <br />
+          <label>Email address</label>
+          <br />
+          <input
+            type="email"
+            className="form"
+            placeholder="Enter Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <br />
+          <label>Phone</label><br/>
+          <input
+            type="text"
+            className="form"
+            placeholder="Enter Phone"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
+          <br />
+          <label>password </label><br/>
+          <input
+            type="password"
+            className="form"
+            placeholder="Enter password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          /><br/>
+          <button type="submit" className="btn">
+            Submit
+          </button>
+          <p>
+            Already have an account click here to{" "}
+            <Link to="/login" className="link">
+              Login
+            </Link>
+          </p>
+      </form>
+      </div>
+    );
 }
 export default Register;
