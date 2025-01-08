@@ -3,7 +3,6 @@
   padding: 0;
   box-sizing: border-box;
   font-family: Arial, sans-serif;
-  background-color: none;
 }
 
 body {
@@ -11,35 +10,41 @@ body {
   color: #000;
   display: flex;
   justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
 .container {
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
-  margin: auto;
+  padding: 80px 0;
   width: 90vw;
-  height: 100vh;
+  height: 100%;
   border: none;
 }
 
+
 .home {
-  flex-direction: column;
-  height: 100vh;
-  width: 90vw;
   display: flex; 
+  flex-direction: column;
   justify-content: center; 
   align-items: center;
-  max-width: fit-content;
+  width: 100%;
+  max-width: 1200px;
+  padding: 20px;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
+  width: 90vw;
+  padding: 20px;
+  position: fixed;
+  top: 0;
   background: none;
-  box-shadow: none;
 }
 
 .logo {
@@ -61,15 +66,12 @@ body {
   font-weight: bold;
 }
 
-nav{
-background: rgba(255, 255, 255, 0.15);
-border-radius: 15px;
-box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-backdrop-filter: blur(5px);
--webkit-backdrop-filter: blur(5px);
-padding: 0.5rem;
-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-
+nav {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 15px;
+  padding: 10px 20px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
 }
 
 nav a {
@@ -79,33 +81,31 @@ nav a {
   font-weight: 600;
 }
 
-button{
-  padding: 0;
-  margin: auto;
+nav a:hover {
+  text-decoration: underline;
 }
+
 .search-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 80vw;
-  margin: 30px auto;
-  padding: 10px;
+  width: 100%;
+  max-width: 600px;
+  margin: 30px 0;
 }
 
 .search-box {
-  background-color: #F5F5F5;
+  display: flex;
+  width: 100%;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.8);
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  width: 80%;
-  padding: 20px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
 }
 
 .search-box input {
   flex: 1;
-  margin: 10px;
+  margin-right: 10px;
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
@@ -113,7 +113,7 @@ button{
 
 .search-box button {
   background: #4CAF50;
-  color: #fff;
+  color: white;
   border: none;
   padding: 10px 20px;
   cursor: pointer;
@@ -121,14 +121,44 @@ button{
   font-size: 16px;
 }
 
+.search-box button:hover {
+  background: #45a049;
+}
+
+.suggestions {
+  margin: 60px 0;
+  padding: 0;
+  list-style-type: none;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 15px;
+  padding: 10px 20px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);;
+  max-height: 150px;
+  max-width: 600px;
+  overflow-y: auto;
+  position: absolute; /* Ensure it appears below the input */
+  z-index: 10;
+  width: 100%; /* Match the input width */
+}
+
+.suggestions li {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.suggestions li:hover {
+  background-color: #f0f0f0;
+}
+
 .tabs {
   display: flex;
   justify-content: center;
+  gap: 10px;
   margin: 20px 0;
 }
 
 .tabs button {
-  margin: 0 10px;
   padding: 10px 20px;
   background-color: #4CAF50;
   border: none;
@@ -137,9 +167,15 @@ button{
   cursor: pointer;
 }
 
+.tabs button:hover {
+  background-color: #45a049;
+}
+
 .favorites {
   text-align: center;
   padding: 20px;
+  width: 100%;
+  max-width: 80vw;
 }
 
 .favorites h2 {
@@ -151,12 +187,11 @@ button{
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 40px;
 }
 
 .mall-card {
-  width: 25vw;
-  width: 35vh;
+  width: 20rem;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -165,19 +200,21 @@ button{
 
 .mall-card img {
   width: 100%;
-  height: 200px;
+  height: 200px; 
   object-fit: cover;
 }
-
 .mall-card p {
   padding: 10px;
   font-size: 16px;
   font-weight: bold;
   text-align: center;
+  color: #000;
 }
 
-.results{
+.results {
   background-color: white;
   padding: 20px;
   margin: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }

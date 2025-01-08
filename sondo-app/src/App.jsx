@@ -20,12 +20,13 @@ function App() {
               <Route path="/" element={<LandingPage/>} />
               <Route path="/login" element={<Login />} />
               <Route path="/home" element={<Home />} />
-              <Route path="/booking" element={<BookingPage />} />
               <Route path="/register" element={<Register />} />
               <Route path="/confirmation" element={<Confirmation />} />
 
               {/* Fallback for undefined routes */}
               <Route path="*" element={<h1>404 - Page Not Found</h1>} />
+              <Route path="/booking" element={<Booking />} />
+              {/* <Route path="/confirmation" element={<Confirmation />} /> */}
             </Routes>
             <ToastContainer />
           </div>
