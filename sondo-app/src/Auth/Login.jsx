@@ -27,33 +27,33 @@ function Login() {
     };
 
     return(
-        <form onSubmit={handleSubmit}>
-            <h1>Login</h1>
+        <div>
+            <form onSubmit={handleSubmit}>
+                <h1>Login</h1>
 
-            <div className="container">
-                <label>Email address</label>
-                <input 
-                    type="email"
-                    className="form"
-                    placeholder='Enter Email'
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                /><br/>
-            
-                <label>password</label>
-                <input
-                    type='password'
-                    className='form'
-                    placeholder='Enter password'
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-            </div>
-            <div>
-                <button type='submit' className="btn">Submit</button>
-            </div>
-            <p>Don't have an account click here to <Link to="/register" className='link'>Register</Link></p>
+                <div className="container">
+                    <label>Email address</label><br/>
+                    <input 
+                        type="email"
+                        className="form"
+                        placeholder='Enter Email'
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    /><br/>
+                
+                    <label>password</label><br/>
+                    <input
+                        type='password'
+                        className='form'
+                        placeholder='Enter password'
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    /><br/>
+                    <button type='submit' className="btn">Submit</button>
+                </div>
+                <p>Don't have an account click here to <Link to="/register" className='link'>Register</Link></p>
             </form>
+        </div>
     )
 }
 export default Login;

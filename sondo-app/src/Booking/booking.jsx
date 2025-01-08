@@ -1,15 +1,53 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./Booking.css";
-
-const BookingPage = () => {
+import { collection, getDocs, doc, updateDoc, addDoc } from "firebase/firestore";
+import { toast } from "react-toastify";
+//import { db } from "./Auth/firebase";
+ 
+const BookingPage = ({user}) => {
   // Sample data for available mobility aids
   const [filters, setFilters] = useState("All");
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const wheelchairs = [
     { id: 1, name: "Wheelchair 1", available: true },
     { id: 2, name: "Wheelchair 2", available: false },
     { id: 3, name: "Wheelchair 3", available: true },
   ];
+
+   useEffect(() => {
+    const fetchItems = async () => {
+      setLoading(true);
+      try {
+        const wheelchairsCollection = collection(db, "wheelchairs");
+        const crutchesCollection = collection(db, "crutches");
+
+        const [wheelchairsSnapshot, crutchesSnapshot] = await Promise.all([
+          getDocs(wheelchairsCollection),
+          getDocs(crutchesCollection),
+        ]);
+
+        const wheelchairs = wheelchairsSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        const crutches = crutchesSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        setItems([...wheelchairs, ...crutches]);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchItems();
+  }, []);
 
   const crutches = [
     { id: 4, name: "Crutches 1", available: true },
@@ -24,6 +62,43 @@ const BookingPage = () => {
   };
 
   const filteredItems = getFilteredItems();
+
+  const handleBook = async (item) => {
+    if (!user) {
+      toast.error("Please log in to book a mobility aid.", {position : "top-center",});
+      return;
+    }
+
+    try {
+      // Update item availability in Firestore
+      const itemRef = doc(db, "wheelchairs", item.id); // Replace "wheelchairs" with your collection name
+      await updateDoc(itemRef, { available: false });
+
+      // Add booking details to Firestore
+      const bookingsCollection = collection(db, "bookings");
+      await addDoc(bookingsCollection, {
+        userId: user.id, 
+        userName: user.name,
+        userEmail: user.email,
+        itemId: item.id,
+        itemName: item.name,
+        bookingDate: new Date().toISOString(),
+      });
+
+      // Update local state
+      setItems((prevItems) =>
+        prevItems.map((i) =>
+          i.id === item.id ? { ...i, available: false } : i
+        )
+      );
+
+      toast.success(`Successfully booked ${item.name}`, {position: "top-center"});
+    } catch (error) {
+      console.error("Error handling booking:", error);
+      toast.error("Failed to book the item. Please try again.", {position: "bottom-center"});
+    }
+  };
+
 
   return (
     <div className="booking-page">
@@ -40,7 +115,7 @@ const BookingPage = () => {
 
       {/**** Hero Section *****/}
       <section className="hero">
-        <h2>Available Wheelchairs</h2>
+        <h2>Available {filters === "All" ? "Mobility Aids" : filters}</h2>
         {user ? (
           <p>
             Logged in as <strong>{user.name}</strong> ({user.email})
@@ -78,7 +153,7 @@ const BookingPage = () => {
           <div key={item.id} className="list-item">
             <span>{item.name}</span>
             {item.available ? (
-              <button className="book-button">Book</button>
+              <button className="book-button" onClick={() => handleBook(item)} >Book</button>
             ) : (
               <span className="unavailable">Unavailable</span>
             )}
