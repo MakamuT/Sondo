@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
+
 import './home.css';
 
 const Header = () => {
@@ -23,10 +25,10 @@ const Header = () => {
       </div>
 
       <nav className={`nav ${isMenuOpen ? "open" : ""}`}>
-        <a href="#">Booking</a>
-        <a href="#">About</a>
+        <Link to="/booking">Booking</Link>
+        <Link to="/home">Home</Link>
         <a href="#">Contact</a>
-        <a href="#">FAQ</a>
+        <Link to="/login">Login</Link>
       </nav>
     </header>
   );
