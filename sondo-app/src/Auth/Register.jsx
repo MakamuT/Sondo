@@ -4,8 +4,8 @@ import { auth, db } from './firebase';
 import { setDoc, doc } from 'firebase/firestore';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import header from "../header";
 import './style.css';
-
 
 function Register() {
     const [email, setEmail] = useState("");
@@ -41,6 +41,8 @@ function Register() {
     }
 
     return (
+        <>
+            <header />
         <div className="container">
             <h1>Register</h1><br/>
       <form onSubmit={handleRegister}>
@@ -99,8 +101,9 @@ function Register() {
               Login
             </Link>
           </p>
-      </form>
-      </div>
+          </form>
+        </div>
+        </>
     );
 }
 export default Register;
