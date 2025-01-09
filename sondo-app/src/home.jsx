@@ -1,12 +1,17 @@
 import './home.css';
 import Header from './header';
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [filteredMalls, setFilteredMalls] = useState([]);
+  const navigate = useNavigate();
 
+  const handleMallClick = (mallId) => {
+    navigate(`/booking/${mallId}`);
+  };
   const mockMalls = {
     "Johannesburg": [
       {
@@ -181,16 +186,21 @@ function Home() {
         {/***************** Search Results ***************/}
         {filteredMalls.length > 0 && (
           <div className="results">
-            <h2>Search Results</h2>
-            <div className="mall-cards">
-              {filteredMalls.map((mall) => (
-                <div key={mall.id} className="mall-card">
-                  <img src={mall.imgUrl} alt={mall.name} />
-                  <h3>{mall.name}</h3>
-                  <p>Available Devices: {mall.devices.join(", ")}</p>
-                </div>
-              ))}
-            </div>
+          <h2>Search Results</h2>
+          <div className="mall-cards">
+            {filteredMalls.map((mall) => (
+              <div
+                key={mall.id}
+                className="mall-card"
+                onClick={() => handleMallClick(mall.id)}
+                style={{ cursor: "pointer" }}
+              >
+                <img src={mall.imgUrl} alt={mall.name} />
+                <h3>{mall.name}</h3>
+                <p>Available Devices: {mall.devices.join(", ")}</p>
+              </div>
+            ))}
+          </div>
           </div>
         )}
       </div>
