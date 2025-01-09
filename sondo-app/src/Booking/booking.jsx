@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import "./Booking.css";
+import Header from "../header";
 
 const BookingPage = () => {
   const [user, setUser] = useState(null);
@@ -33,27 +34,16 @@ const BookingPage = () => {
 
   return (
     <div className="booking-page">
-      {/**** Header ****/}
-      <header className="header">
-        <div className="logo">Sondo</div>
-        <nav className="nav">
-          <a href="#">Booking</a>
-          <a href="#">About</a>
-          <a href="#">Contact</a>
-          <a href="#">FAQ</a>
-        </nav>
-      </header>
+      <Header />
 
       {/**** Hero Section *****/}
       <section className="hero">
-        <h2>Available Wheelchairs</h2>
-        {user ? (
-          <p>
-            Logged in as <strong>{user.name}</strong> ({user.email})
-          </p>
-        ) : (
-          <p>Please log in to see available items.</p>
-        )}
+        <img
+          src="https://via.placeholder.com/250" // Replace with actual mall image URL
+          alt="Mall of Africa"
+          className="mall-image"
+        />
+        <h2>Mall of Africa</h2>
       </section>
 
       {/**** Filters ****/}
@@ -77,6 +67,7 @@ const BookingPage = () => {
           Crutches
         </button>
       </div>
+<<<<<<< Updated upstream
       {/**** Placeholder List ****/}
       <div className="placeholder-list">
         {filteredItems.map((item) => (
@@ -89,6 +80,25 @@ const BookingPage = () => {
             )}
           </div>
         ))}
+=======
+
+      {/**** Items List ****/}
+      <div className="item-list">
+        {filteredItems.length > 0 ? (
+          filteredItems.map((item) => (
+            <div key={item.id} className="list-item">
+              <span>{item.name}</span>
+              {item.available ? (
+                <button className="book-button">Book</button>
+              ) : (
+                <span className="unavailable">Unavailable</span>
+              )}
+            </div>
+          ))
+        ) : (
+          <p>No items available for this filter.</p>
+        )}
+>>>>>>> Stashed changes
       </div>
 
       {/****** Footer *****/}
