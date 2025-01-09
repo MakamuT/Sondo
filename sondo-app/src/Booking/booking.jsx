@@ -2,13 +2,14 @@ import { useState } from "react";
 import { useEffect } from "react";
 import "./Booking.css";
 
-const BookingPage = () => {
-  const [user, setUser] = useState(null);
+import { db, auth } from "../Auth/firebase";
+import { toast } from "react-toastify";
+import { doc, updateDoc, getDocs, collection } from "firebase/firestore";
 
-  useEffect(() => {
-    // Simulate fetching user data
-    setUser({ name: "John Doe", email: "john.doe@example.com" });
-  }, []);
+const BookingPage = () => {
+  const [mobilityAids, setMobilityAids] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [currentUser] = useAuthState(auth);
   const [filters, setFilters] = useState("All");
 
   const wheelchairs = [
@@ -21,6 +22,61 @@ const BookingPage = () => {
     { id: 4, name: "Crutches 1", available: true },
     { id: 5, name: "Crutches 2", available: true },
   ];
+
+  const bookMobilityAid = async (item) => {
+    if (!currentUser) {
+      toast.error("You need to log in to book a wheelchair.", {
+        position: "top-center",
+      });
+      return;
+    }
+
+    const itemRef = doc(db, "mobilityAids", item.id);
+    try {
+      await updateDoc(itemRef, {
+        available: false,
+        bookedBy: currentUser.uid, 
+        bookedByEmail: currentUser.email, 
+      });
+
+      setMobilityAids((prev) =>
+        prev.map((aid) =>
+          aid.id === item.id
+            ? { ...aid, available: false, bookedBy: currentUser.uid }
+            : aid
+        )
+      );
+
+      toast.success("Wheelchair booked successfully!", {
+        position: "top-center",
+      });
+    } catch (error) {
+      console.error("Error booking wheelchair:", error);
+      toast.error("Failed to book wheelchair. Please try again.", {
+        position: "bottom-center",
+      });
+    }
+  };
+
+  const fetchMobilityAids = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "mobilityAids"));
+      const items = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setMobilityAids(items);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching mobility aids:", error);
+      toast.error("Failed to load data");
+    }
+  };
+
+  const wheelchairItems = mobilityAids.filter(
+    (item) => item.type === "Wheelchair"
+  );
+
 
   // Filter function
   const getFilteredItems = () => {
@@ -47,9 +103,9 @@ const BookingPage = () => {
       {/**** Hero Section *****/}
       <section className="hero">
         <h2>Available Wheelchairs</h2>
-        {user ? (
+        {currentUser ? (
           <p>
-            Logged in as <strong>{user.name}</strong> ({user.email})
+            Logged in as <strong>{currentUser.displayName}</strong> ({currentUser.email})
           </p>
         ) : (
           <p>Please log in to see available items.</p>
