@@ -119,20 +119,6 @@ const BookingPage = () => {
           Crutches
         </button>
       </div>
-<<<<<<< Updated upstream
-      {/**** Placeholder List ****/}
-      <div className="placeholder-list">
-        {filteredItems.map((item) => (
-          <div key={item.id} className="list-item">
-            <span>{item.name}</span>
-            {item.available ? (
-              <button className="book-button">Book</button>
-            ) : (
-              <span className="unavailable">Unavailable</span>
-            )}
-          </div>
-        ))}
-=======
 
       {/**** Items List ****/}
       <div className="item-list">
@@ -150,7 +136,6 @@ const BookingPage = () => {
         ) : (
           <p>No items available for this filter.</p>
         )}
->>>>>>> Stashed changes
       </div>
 
       {/****** Footer *****/}
