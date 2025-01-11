@@ -4,12 +4,9 @@ import "./Booking.css";
 import Header from "../header";
 
 const BookingPage = () => {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    // Simulate fetching user data
-    setUser({ name: "John Doe", email: "john.doe@example.com" });
-  }, []);
+  const [mobilityAids, setMobilityAids] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [currentUser] = useAuthState(auth);
   const [filters, setFilters] = useState("All");
 
   const wheelchairs = [
@@ -22,6 +19,61 @@ const BookingPage = () => {
     { id: 4, name: "Crutches 1", available: true },
     { id: 5, name: "Crutches 2", available: true },
   ];
+
+  const bookMobilityAid = async (item) => {
+    if (!currentUser) {
+      toast.error("You need to log in to book a wheelchair.", {
+        position: "top-center",
+      });
+      return;
+    }
+
+    const itemRef = doc(db, "mobilityAids", item.id);
+    try {
+      await updateDoc(itemRef, {
+        available: false,
+        bookedBy: currentUser.uid, 
+        bookedByEmail: currentUser.email, 
+      });
+
+      setMobilityAids((prev) =>
+        prev.map((aid) =>
+          aid.id === item.id
+            ? { ...aid, available: false, bookedBy: currentUser.uid }
+            : aid
+        )
+      );
+
+      toast.success("Wheelchair booked successfully!", {
+        position: "top-center",
+      });
+    } catch (error) {
+      console.error("Error booking wheelchair:", error);
+      toast.error("Failed to book wheelchair. Please try again.", {
+        position: "bottom-center",
+      });
+    }
+  };
+
+  const fetchMobilityAids = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "mobilityAids"));
+      const items = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setMobilityAids(items);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching mobility aids:", error);
+      toast.error("Failed to load data");
+    }
+  };
+
+  const wheelchairItems = mobilityAids.filter(
+    (item) => item.type === "Wheelchair"
+  );
+
 
   // Filter function
   const getFilteredItems = () => {
