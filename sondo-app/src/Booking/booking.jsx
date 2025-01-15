@@ -10,6 +10,7 @@ import {
   where,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import Header from "../header"
 
 const BookingPage = () => {
   const [wheelchairs, setWheelchairs] = useState([]);
@@ -27,7 +28,7 @@ const BookingPage = () => {
         const q = query(
           collection(db, "wheelchairs"),
           filters === "All"
-            ? where("available", "==", true)
+            ? where("available", "==")
             : where("type", "==", filters)
         );
         const querySnapshot = await getDocs(q);
@@ -71,7 +72,7 @@ const BookingPage = () => {
       const q = query(
         collection(db, "wheelchairs"),
         filters === "All"
-          ? where("available", "==", true)
+          ? where("available", "==")
           : where("type", "==", filters)
       );
       const querySnapshot = await getDocs(q);
@@ -90,6 +91,7 @@ const BookingPage = () => {
 
   return (
     <div className="booking-page">
+      {<Header/>}
       <section className="hero">
         <img
           src="https://via.placeholder.com/250"

@@ -1,5 +1,4 @@
 /* Booking.css */
-
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -12,32 +11,13 @@ body {
   min-height: 100vh;
 }
 
-/* .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 20px;
-  background-color: #4CAF50;
-  color: white;
-} */
-
-/* .nav {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.nav a {
-  margin: 5px 10px;
-  text-decoration: none;
-  color: white;
-} */
-
 .hero {
   text-align: center;
   padding: 20px;
 }
 
 .hero img {
+  margin-top: 30px;
   max-width: 100%;
   height: auto;
   border-radius: 10px;
@@ -65,16 +45,17 @@ body {
 }
 
 .item-list {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
   padding: 20px;
-  margin: 0 ;
+  margin: 0 auto;
   max-width: 1200px;
 }
 
+
 .list-item {
-  padding: 15px;
+  padding: 10px;
   border: 1px solid #ddd;
   border-radius: 10px;
   background-color: #f9f9f9;
@@ -99,6 +80,8 @@ body {
 .unavailable {
   color: red;
   font-weight: bold;
+  text-align: right;
+  margin-left: 5px;
 }
 
 .footer {
@@ -111,24 +94,6 @@ body {
 
 /* Media Queries for Responsiveness */
 @media (max-width: 768px) {
-  .header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .nav {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .nav a {
-    margin: 5px 0;
-  }
-
-  .hero h2 {
-    font-size: 1.5rem;
-  }
-
   .filters {
     flex-direction: column;
     align-items: center;
