@@ -1,12 +1,12 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "./Auth/Login";
-import LandingPage from "./Landingpage";
+import Login from "./Auth/login";
+import LandingPage from "./Landing/Landingpage";
 import Register from "./Auth/Register";
 import Booking from "./Booking/booking";
 import Confirmation from "./Booking/Confirmation";
-import Home from "./home";
+import Home from "./Home/Home";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
