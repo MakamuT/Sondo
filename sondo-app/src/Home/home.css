@@ -86,7 +86,6 @@ nav a:hover {
   text-decoration: none;
   color: #000;
   background-color: yellow;
-  height: 100%
 }
 
 .nav.open {
@@ -141,7 +140,7 @@ nav a:hover {
   border-radius: 15px;
   padding: 10px 20px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(5px);;
+  backdrop-filter: blur(5px);
   max-height: 150px;
   max-width: 600px;
   overflow-y: auto;

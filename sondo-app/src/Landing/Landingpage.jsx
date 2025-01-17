@@ -1,7 +1,7 @@
 /* LandingPage.js */
 import React from "react";
 import "./LandingPage.css";
-import Header from "./header";
+import Header from "../Home/Header";
 function LandingPage() {
   return (
     <div className="container">

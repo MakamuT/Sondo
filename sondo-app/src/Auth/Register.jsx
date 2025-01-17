@@ -4,7 +4,7 @@ import { auth, db } from './firebase';
 import { setDoc, doc } from 'firebase/firestore';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import header from "../header";
+import header from '../Home/Header';
 import './style.css';
 
 function Register() {
@@ -42,7 +42,7 @@ function Register() {
 
     return (
         <>
-            <header />
+            {header()}
         <div className="container">
             <h1>Register</h1><br/>
       <form onSubmit={handleRegister}>

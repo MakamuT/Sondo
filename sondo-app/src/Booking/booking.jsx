@@ -10,10 +10,10 @@ import {
   where,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import Header from "../header"
+import Header from "../Home/Header"
 
 const BookingPage = () => {
-  const [wheelchairs, setWheelchairs] = useState([]);
+  const [wheelchairs, setWheelchairs] = useState([]); 
   const [selectedWheelchair, setSelectedWheelchair] = useState(null);
   const [filters, setFilters] = useState("All");
   const [loading, setLoading] = useState(false);
@@ -25,10 +25,17 @@ const BookingPage = () => {
     const fetchWheelchairs = async () => {
       setLoading(true);
       try {
+        /**
+         * Creates a Firestore query to fetch wheelchairs based on availability or type.
+         *
+         * @param {Object} db - The Firestore database instance.
+         * @param {string} filters - The filter criteria for the query. If "All", fetches available wheelchairs. Otherwise, fetches wheelchairs of the specified type.
+         * @returns {Query} A Firestore query object to fetch the filtered wheelchairs.
+         */
         const q = query(
           collection(db, "wheelchairs"),
           filters === "All"
-            ? where("available", "==")
+            ? where("available", "==", true)
             : where("type", "==", filters)
         );
         const querySnapshot = await getDocs(q);
@@ -91,7 +98,7 @@ const BookingPage = () => {
 
   return (
     <div className="booking-page">
-      {<Header/>}
+      {Header()}
       <section className="hero">
         <img
           src="https://via.placeholder.com/250"
@@ -124,7 +131,7 @@ const BookingPage = () => {
         </button>
       </div>
 
-      <div className="placeholder-list">
+      <div className="item-list">
         {loading ? (
           <p>Loading...</p>
         ) : (
