@@ -1,13 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import './home.css';
 
 const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
   };
+  const [theme, setTheme] = useState(false);
+  useEffect(() => { 
+    if (theme) {
+      document.body.classList.add();
+    }
+  });
 
   return (
     <header className="header">
@@ -26,8 +31,9 @@ const Header = () => {
       <nav className={`nav ${isMenuOpen ? "open" : ""}`}>
         <Link to="/booking">Booking</Link>
         <Link to="/home">Home</Link>
-        <a href="#">Contact</a>
+        <Link to="/">Contact</Link>
         <Link to="/login">Login</Link>
+        <button>Dark</button>
       </nav>
     </header>
   );

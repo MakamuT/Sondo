@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./Auth/login";
@@ -8,12 +7,10 @@ import Booking from "./Booking/booking";
 import Confirmation from "./Booking/Confirmation";
 import Home from "./Home/Home";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
     <BrowserRouter>
-      <div className="App" data-theme="dark">
         <div className="auth-wrapper">
           <div className="auth-inner">
             <Routes>
@@ -29,7 +26,6 @@ function App() {
             <ToastContainer />
           </div>
         </div>
-      </div>
     </BrowserRouter>
   );
 }
