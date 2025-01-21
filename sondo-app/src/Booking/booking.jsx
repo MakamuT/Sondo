@@ -10,28 +10,24 @@ import {
   where,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import Header from "../Home/Header"
+import Header from "../Home/Header";
+import { useNavigate } from "react-router-dom";
 
 const BookingPage = () => {
-  const [wheelchairs, setWheelchairs] = useState([]); 
+  const [wheelchairs, setWheelchairs] = useState([]);
   const [selectedWheelchair, setSelectedWheelchair] = useState(null);
   const [filters, setFilters] = useState("All");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
   const db = getFirestore();
   const auth = getAuth();
 
+  // Fetch wheelchairs from Firestore
   useEffect(() => {
     const fetchWheelchairs = async () => {
       setLoading(true);
       try {
-        /**
-         * Creates a Firestore query to fetch wheelchairs based on availability or type.
-         *
-         * @param {Object} db - The Firestore database instance.
-         * @param {string} filters - The filter criteria for the query. If "All", fetches available wheelchairs. Otherwise, fetches wheelchairs of the specified type.
-         * @returns {Query} A Firestore query object to fetch the filtered wheelchairs.
-         */
         const q = query(
           collection(db, "wheelchairs"),
           filters === "All"
@@ -43,7 +39,6 @@ const BookingPage = () => {
           id: doc.id,
           ...doc.data(),
         }));
-        console.log("Fetched Wheelchairs:", data);
         setWheelchairs(data);
       } catch (error) {
         console.error("Error fetching wheelchairs:", error);
@@ -54,40 +49,53 @@ const BookingPage = () => {
     fetchWheelchairs();
   }, [db, filters]);
 
+  // Handle booking logic
   const handleBooking = async (wheelchairId) => {
-    if (!auth.currentUser) {
+    if (!wheelchairId) {
+      setMessage("Please select a wheelchair to book.");
+      return;
+    }
+
+    const user = auth.currentUser;
+    if (!user) {
       setMessage("You need to log in to make a booking.");
       return;
     }
 
     setLoading(true);
     setMessage("");
+
     try {
+      // Save booking to Firestore
       const bookingRef = doc(collection(db, "bookings"));
+      const bookingTime = new Date().toISOString();
       await setDoc(bookingRef, {
-        userId: auth.currentUser.uid,
+        userId: user.uid,
         wheelchairId,
-        bookingTime: new Date().toISOString(),
+        bookingTime,
       });
 
+      // Mark the wheelchair as unavailable
       const wheelchairRef = doc(db, "wheelchairs", wheelchairId);
       await setDoc(wheelchairRef, { available: false }, { merge: true });
 
-      setMessage("Booking successful!");
+      // Booking details to pass to confirmation page
+      const bookingDetails = {
+        userName: user.displayName || "Anonymous",
+        userEmail: user.email || "No Email",
+        wheelchairName: wheelchairs.find((wc) => wc.id === wheelchairId).name,
+        bookingTime,
+      };
 
-      // Refresh the wheelchair list
-      const q = query(
-        collection(db, "wheelchairs"),
-        filters === "All"
-          ? where("available", "==")
-          : where("type", "==", filters)
+      // Navigate to confirmation page
+      navigate("/confirmation", { state: { bookingDetails } });
+
+      // Update wheelchairs list
+      setWheelchairs((prev) =>
+        prev.map((wc) =>
+          wc.id === wheelchairId ? { ...wc, available: false } : wc
+        )
       );
-      const querySnapshot = await getDocs(q);
-      const data = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setWheelchairs(data);
     } catch (error) {
       console.error("Error making booking:", error);
       setMessage("Failed to make booking. Please try again.");
@@ -98,7 +106,7 @@ const BookingPage = () => {
 
   return (
     <div className="booking-page">
-      {Header()}
+      <Header />
       <section className="hero">
         <img
           src="https://via.placeholder.com/250"
@@ -108,6 +116,7 @@ const BookingPage = () => {
         <h2>Mall of Africa</h2>
       </section>
 
+      {/* Filter Buttons */}
       <div className="filters">
         <button
           className={`filter-button ${filters === "All" ? "active" : ""}`}
@@ -123,18 +132,13 @@ const BookingPage = () => {
         >
           Wheelchairs
         </button>
-        <button
-          className={`filter-button ${filters === "Crutches" ? "active" : ""}`}
-          onClick={() => setFilters("Crutches")}
-        >
-          Crutches
-        </button>
       </div>
 
+      {/* Wheelchair List */}
       <div className="item-list">
         {loading ? (
           <p>Loading...</p>
-        ) : (
+        ) : wheelchairs.length > 0 ? (
           wheelchairs.map((item) => (
             <div key={item.id} className="list-item">
               <span>{item.name}</span>
@@ -150,11 +154,15 @@ const BookingPage = () => {
               )}
             </div>
           ))
+        ) : (
+          <p>No wheelchairs available.</p>
         )}
       </div>
 
+      {/* Message Display */}
       {message && <p className="message">{message}</p>}
 
+      {/* Footer */}
       <footer className="footer">
         <p>&copy; 2024 Sondo. All rights reserved.</p>
       </footer>

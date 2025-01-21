@@ -1,5 +1,4 @@
 body {
-
   font-family: Arial, sans-serif;
   min-height: 100vh; /* Ensure the body takes at least the full viewport height */
   display: flex;
@@ -48,14 +47,13 @@ body {
 
 .item-list {
   display: flex;
+  color: black;
   flex-direction: column;
   gap: 10px;
   padding: 20px;
   margin: 0 auto;
-  max-width: 100rem;
+  max-width: 50rem;
   }
-
-
 
 .list-item {
   padding: 10px;
@@ -98,4 +96,19 @@ body {
   width: 100vw;
 }
 
-
+/*For mobile phones: */
+@media only screen and (max-width: 600px) {
+  .item-list {
+    padding: 10px;
+  }
+  .list-item {
+    padding: 5px;
+  }
+  .book-button {
+    padding: 5px;
+    margin-left: 20px;
+  }
+  .footer {
+    padding: 10px;
+  }
+}

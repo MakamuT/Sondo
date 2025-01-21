@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import './home.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -8,11 +9,11 @@ const Header = () => {
     setIsMenuOpen((prev) => !prev);
   };
   const [theme, setTheme] = useState(false);
-  useEffect(() => { 
-    if (theme) {
-      document.body.classList.add();
-    }
-  });
+  const handleClick = () => { 
+    setTheme(!theme);
+    document.body.classList.toggle('dark', !theme);
+  }
+  
 
   return (
     <header className="header">
@@ -33,7 +34,9 @@ const Header = () => {
         <Link to="/home">Home</Link>
         <Link to="/">Contact</Link>
         <Link to="/login">Login</Link>
-        <button>Dark</button>
+        <button className='dark-btn' onClick={handleClick}>
+          <i className={`fas ${theme ? 'fa-sun' : 'fa-moon'}`}></i>
+        </button>
       </nav>
     </header>
   );

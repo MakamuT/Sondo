@@ -2,6 +2,7 @@
 import React from "react";
 import "./LandingPage.css";
 import Header from "../Home/Header";
+import { Link } from "react-router-dom";
 function LandingPage() {
   return (
     <div className="container">
@@ -20,7 +21,7 @@ function LandingPage() {
             with peace of mind.
           </p>
           <div className="button-group">
-            <button className="cta-button book">Book a Wheelchair</button>
+           <Link to="/booking"><button className="cta-button book">Book a Wheelchair</button></Link>
             <button className="cta-button find">Learn more</button>
           </div>
         </div>
