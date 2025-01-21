@@ -1,226 +1,193 @@
-import './home.css';
-import Header from './header';
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import './home.css'; // Importing the CSS file to style the Home component.
+import Header from './header'; // Importing the Header component to display at the top of the page.
+import { useState } from "react"; // Importing the useState hook to manage component-specific state.
+import { useNavigate } from "react-router-dom"; // Importing useNavigate to enable navigation to other pages programmatically.
 
 function Home() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [suggestions, setSuggestions] = useState([]);
-  const [filteredMalls, setFilteredMalls] = useState([]);
+  // State to store the user's search input.
+  const [searchQuery, setSearchQuery] = useState(""); 
+  // State to store the search results fetched from the Overpass API.
+  const [searchResults, setSearchResults] = useState([]);
+  // State to manage the loading status during asynchronous operations.
+  const [loading, setLoading] = useState(false);
+  // Hook to navigate the user to a different route within the app.
   const navigate = useNavigate();
 
-  const handleMallClick = (mallId) => {
-    navigate(`/booking/${mallId}`);
-  };
-  const mockMalls = {
-    "Johannesburg": [
-      {
-        id: "mall1",
-        name: "Sandton City",
-        imgUrl: "https://images.unsplash.com/photo-1549479732-ee0adb0f5d32?q=80&w=1626&auto=format&fit=crop",
-        devices: ["Wheelchair", "Scooter"],
-      },
-      {
-        id: "mall2",
-        name: "Rosebank Mall",
-        imgUrl: "https://images.unsplash.com/photo-1506015391300-4802dc85da6e?q=80&w=1626&auto=format&fit=crop",
-        devices: ["Scooter"],
-      },
-    ],
-    "Cape Town": [
-      {
-        id: "mall3",
-        name: "Canal Walk Shopping Centre",
-        imgUrl: "https://images.unsplash.com/photo-1575659729240-77f497f4807d?q=80&w=1626&auto=format&fit=crop",
-        devices: ["Wheelchair", "Walker"],
-      },
-      {
-        id: "mall4",
-        name: "V&A Waterfront",
-        imgUrl: "https://images.unsplash.com/photo-1506015391300-4802dc85da6e?q=80&w=1626&auto=format&fit=crop",
-        devices: ["Cane", "Scooter"],
-      },
-    ],
-    "Durban": [
-      {
-        id: "mall5",
-        name: "Gateway Theatre of Shopping",
-        imgUrl: "https://images.unsplash.com/photo-1727950693413-2068d59ea433?w=500&auto=format&fit=crop&q=60",
-        devices: ["Wheelchair", "Scooter"],
-      },
-      {
-        id: "mall6",
-        name: "The Pavilion Shopping Centre",
-        imgUrl: "https://images.unsplash.com/photo-1516274626895-055a99214f08?q=80&w=1470&auto=format&fit=crop",
-        devices: ["Walker", "Scooter"],
-      },
-    ],
-    "Pretoria": [
-      {
-        id: "mall7",
-        name: "Menlyn Park Shopping Centre",
-        imgUrl: "https://images.unsplash.com/photo-1549479732-ee0adb0f5d32?q=80&w=1626&auto=format&fit=crop",
-        devices: ["Wheelchair", "Cane"],
-      },
-      {
-        id: "mall8",
-        name: "Brooklyn Mall",
-        imgUrl: "https://images.unsplash.com/photo-1506015391300-4802dc85da6e?q=80&w=1626&auto=format&fit=crop",
-        devices: ["Wheelchair", "Scooter"],
-      },
-    ],
+  /**
+   * Handles user interaction with a specific mall card.
+   * Navigates the user to a booking page for the selected mall, passing the mall's ID and name as state.
+   * @param {string} mallId - Unique identifier for the selected mall.
+   * @param {string} mallName - Name of the selected mall.
+   */
+  const handleMallClick = (mallId, mallName) => {
+    navigate(`/booking/${mallId}`, { state: { name: mallName } });
   };
 
-  const handleSearch = () => {
+  /**
+   * Initiates a search for malls around a fixed location (Johannesburg in this case).
+   * Fetches data from the Overpass API and updates the state with the results.
+   * Displays an alert if no input is provided or no results are found.
+   */
+  const handleSearch = async () => {
     if (!searchQuery.trim()) {
-      alert("Please enter a city or mall name.");
+      // If the search query is empty or contains only spaces, alert the user.
+      alert("Please enter a search query.");
       return;
     }
 
-    // Check if query matches a city
-    const cityMalls = mockMalls[searchQuery];
-    if (cityMalls) {
-      setFilteredMalls(cityMalls);
-      return;
-    }
+    setLoading(true); // Set loading state to true to indicate that data is being fetched.
+    try {
+      // Build the Overpass API query to search for nodes matching the input within a 10km radius of Johannesburg's coordinates.
+      const overpassUrl = `https://overpass-api.de/api/interpreter?data=[out:json];
+      (
+        node["name"~"${searchQuery}",i](around:10000,-26.2041,28.0473);
+      );
+      out;`;
+      const response = await fetch(overpassUrl); // Send a GET request to the Overpass API.
+      const data = await response.json(); // Parse the JSON response.
 
-    // Check if query matches a mall name in any city
-    const mallResults = Object.values(mockMalls).flatMap((malls) =>
-      malls.filter((mall) =>
-        mall.name.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    );
+      console.log("Raw Overpass Response:", data); // Log the raw API response for debugging purposes.
 
-    if (mallResults.length > 0) {
-      setFilteredMalls(mallResults);
-    } else {
-      alert("No matching malls or cities found. Try another search.");
-      setFilteredMalls([]);
+      // Transform the raw API response into a more user-friendly format.
+      const results = data.elements.map((element) => ({
+        id: element.id, // Unique ID for the element.
+        name: element.tags.name || "Unnamed Location", // Use "Unnamed Location" if no name is provided.
+        type: element.tags.amenity || element.tags.entrance || "Point of Interest", // Determine the type of the location.
+        address: `Lat: ${element.lat}, Lon: ${element.lon}`, // Display the location's latitude and longitude.
+        coordinates: [element.lon, element.lat], // Store the coordinates for potential future use.
+      }));
+
+      // Alert the user if no results are found.
+      if (results.length === 0) {
+        alert("No results found. Try refining your search query.");
+      }
+
+      setSearchResults(results); // Update the state with the transformed results.
+    } catch (error) {
+      // Log any errors that occur during the fetch request.
+      console.error("Error with Overpass API:", error);
+      // Notify the user that the fetch request failed.
+      alert("Failed to fetch search results. Please try again.");
+    } finally {
+      // Reset the loading state to false once the fetch operation is complete.
+      setLoading(false);
     }
   };
 
+  /**
+   * Updates the search query state as the user types into the input field.
+   * @param {Event} e - The event object from the input field's onChange event.
+   */
   const handleInputChange = (e) => {
-    setSearchQuery(e.target.value);
+    setSearchQuery(e.target.value); // Update the search query state with the new input value.
   };
-  
-  useEffect(() => {
-    const citySuggestions = Object.keys(mockMalls).filter((city) =>
-      city.toLowerCase().includes(searchQuery.toLowerCase())
-    );
 
-    const mallSuggestions = Object.values(mockMalls)
-      .flatMap((malls) => malls)
-      .filter((mall) =>
-        mall.name.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-      .map((mall) => mall.name);
-
-    setSuggestions([...citySuggestions, ...mallSuggestions]);
-  }, [searchQuery]);
-
-  const handleSuggestionClick = (suggestion) => {
-    setSearchQuery(suggestion);
-    setSuggestions([]);
-
-    // Directly check if the suggestion is a city or mall
-    const cityMalls = mockMalls[suggestion];
-    if (cityMalls) {
-      setFilteredMalls(cityMalls);
-    } else {
-      // If not a city, check for a mall match
-      const mallResults = Object.values(mockMalls)
-        .flatMap((malls) => malls)
-        .filter((mall) => mall.name === suggestion);
-      setFilteredMalls(mallResults);
+  /**
+   * Performs a search for malls based on the user's current geolocation.
+   * Utilizes the Geolocation API to get the user's coordinates and queries the Overpass API with those coordinates.
+   * Alerts the user if location services are disabled or if no results are found near their location.
+   */
+  const handleGeolocationSearch = () => {
+    if (!searchQuery.trim()) {
+      alert("Please enter a search query.");
+      return;
     }
+
+    setLoading(true); // Set loading state to true to indicate that data is being fetched.
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords; // Extract the user's latitude and longitude.
+        try {
+          // Build the Overpass API query using the user's dynamic coordinates.
+          const overpassUrl = `https://overpass-api.de/api/interpreter?data=[out:json];
+          (
+            node["name"~"${searchQuery}",i](around:10000,${latitude},${longitude});
+          );
+          out;`;
+          const response = await fetch(overpassUrl); // Send a GET request to the Overpass API.
+          const data = await response.json(); // Parse the JSON response.
+
+          console.log("Dynamic Location Results:", data); // Log the raw API response for debugging purposes.
+
+          // Transform the raw API response into a more user-friendly format.
+          const results = data.elements.map((element) => ({
+            id: element.id,
+            name: element.tags.name || "Unnamed Location",
+            type: element.tags.amenity || element.tags.entrance || "Point of Interest",
+            address: `Lat: ${element.lat}, Lon: ${element.lon}`,
+            coordinates: [element.lon, element.lat],
+          }));
+
+          // Alert the user if no results are found near their location.
+          if (results.length === 0) {
+            alert("No results found near your location.");
+          }
+
+          setSearchResults(results); // Update the state with the transformed results.
+        } catch (error) {
+          // Log any errors that occur during the fetch request.
+          console.error("Error with Overpass API:", error);
+          // Notify the user that the fetch request failed.
+          alert("Failed to fetch search results. Please try again.");
+        } finally {
+          // Reset the loading state to false once the fetch operation is complete.
+          setLoading(false);
+        }
+      },
+      (error) => {
+        // Log geolocation errors.
+        console.error("Geolocation Error:", error);
+        // Notify the user that location services are disabled or inaccessible.
+        alert("Could not fetch your location. Please enable location services.");
+        setLoading(false);
+      }
+    );
   };
 
   return (
     <div className="container">
-      {/******************* Header ********************/}
-      <Header />
+      <Header /> {/* Render the Header component to display at the top of the page. */}
       <div className="home">
-        {/********** Search Section ***************/}
         <div className="search-container">
           <div className="search-box">
             <input
               type="text"
-              placeholder="Search by city or mall name..."
-              value={searchQuery}
-              onChange={handleInputChange}
+              placeholder="Search for malls by name..." // Placeholder text for the input field.
+              value={searchQuery} // Bind the input field's value to the searchQuery state.
+              onChange={handleInputChange} // Update searchQuery as the user types.
             />
-            <button onClick={handleSearch}>Search</button>
-          </div>
-          {/* Suggestions List */}
-          {searchQuery && suggestions.length > 0 && (
-            <ul className="suggestions">
-              {suggestions.map((mall) => (
-                <li key={mall} onClick={() => handleSuggestionClick(mall)}>
-                  {mall}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-        </div>
-
-                {/********** Favorites Section **************/}
-                <div className="favorites">
-          <h2>Favorites</h2>
-          <div className="favorites-container">
-            <MallCard
-              imgUrl="https://images.unsplash.com/photo-1727950693413-2068d59ea433?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjd8fG1hbGx8ZW58MHx8MHx8fDA%3D"
-              name="Mall at Reds"
-            />
-            <MallCard
-              imgUrl="https://images.unsplash.com/photo-1516274626895-055a99214f08?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              name="Fourways Mall"
-            />
-            <MallCard
-              imgUrl="https://images.unsplash.com/photo-1549479732-ee0adb0f5d32?q=80&w=1626&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              name="Mall of Africa"
-            />
+            {/* Uncomment the following line to enable fixed-location searches. */}
+            {/* <button onClick={handleSearch}>Search</button> */}
+            <button onClick={handleGeolocationSearch}>Search Near Me</button> {/* Button to trigger geolocation-based search. */}
           </div>
         </div>
 
-        {/***************** Search Results ***************/}
-        {filteredMalls.length > 0 && (
+        {loading && <p>Loading...</p>} {/* Display a loading message while data is being fetched. */}
+
+        {searchResults.length > 0 ? (
           <div className="results">
-          <h2>Search Results</h2>
-          <div className="mall-cards">
-            {filteredMalls.map((mall) => (
-              <div
-                key={mall.id}
-                className="mall-card"
-                onClick={() => handleMallClick(mall.id)}
-                style={{ cursor: "pointer" }}
-              >
-                <img src={mall.imgUrl} alt={mall.name} />
-                <h3>{mall.name}</h3>
-                <p>Available Devices: {mall.devices.join(", ")}</p>
-              </div>
-            ))}
+            <h2>Search Results</h2>
+            <div className="mall-cards">
+              {searchResults.map((result) => (
+                <div
+                  key={result.id}
+                  className="mall-card"
+                  onClick={() => handleMallClick(result.id, result.name)} // Navigate to the booking page when a card is clicked.
+                  style={{ cursor: "pointer" }} // Change cursor to indicate the card is clickable.
+                >
+                  <h3>{result.name}</h3>
+                  <p>Type: {result.type}</p>
+                  <p>{result.address}</p>
+                </div>
+              ))}
+            </div>
           </div>
-          </div>
+        ) : (
+          !loading && <p>No results found. Try refining your search query.</p> // Display a message if no results are found.
         )}
       </div>
+    </div>
   );
 }
 
-import PropTypes from 'prop-types';
-
-function MallCard({ imgUrl, name }) {
-  return (
-    <div className="mall-card">
-      <img src={imgUrl} alt={name} />
-      <h3>{name}</h3>
-  </div>
-  );
-}
-
-MallCard.propTypes = {
-  imgUrl: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-};
-
-export default Home;
+export default Home; // Export the Home component to make it available for import in other files.
