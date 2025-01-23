@@ -3,7 +3,12 @@ const axios = require("axios");
 const cors = require("cors");
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Frontend URL
+    methods: "GET", // Restrict to GET requests
+  })
+);
 
 const API_KEY = "AIzaSyD0oaunDJdfbZj-Tv1VZRpIHXnSQTWAMT8";
 
