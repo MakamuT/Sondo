@@ -1,23 +1,24 @@
-/* Booking.css */
 body {
-  margin: 0;
   font-family: Arial, sans-serif;
-  box-sizing: border-box;
+  min-height: 100vh; /* Ensure the body takes at least the full viewport height */
+  display: flex;
+  flex-direction: column;
 }
 
 .booking-page {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 100vh;  /*Ensure the page is at least as tall as the viewport*/
 }
 
 .hero {
+  margin-top: 40px;
   text-align: center;
   padding: 20px;
 }
 
 .hero img {
-  margin-top: 30px;
+  margin-bottom: -80px;
   max-width: 100%;
   height: auto;
   border-radius: 10px;
@@ -45,14 +46,14 @@ body {
 }
 
 .item-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
+  display: flex;
+  color: black;
+  flex-direction: column;
+  gap: 10px;
   padding: 20px;
   margin: 0 auto;
-  max-width: 1200px;
-}
-
+  max-width: 50rem;
+  }
 
 .list-item {
   padding: 10px;
@@ -85,51 +86,29 @@ body {
   margin-left: 5px;
 }
 
+
 .footer {
-  margin-top: auto;
+  margin-top: auto; /* Pushes the footer to the bottom of the page */
   text-align: center;
   padding: 15px 20px;
   background-color: #4CAF50;
   color: white;
+  width: 100vw;
 }
 
-/* Media Queries for Responsiveness */
-@media (max-width: 768px) {
-  .filters {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .filter-button {
-    width: 90%;
-    max-width: 300px;
-  }
-
+/*For mobile phones: */
+@media only screen and (max-width: 600px) {
   .item-list {
-    grid-template-columns: 1fr;
-  }
-
-  .list-item {
-    width: 100%;
-    max-width: 300px;
-    margin: 0 auto;
-  }
-}
-
-@media (max-width: 480px) {
-  .header {
     padding: 10px;
   }
-
-  .hero h2 {
-    font-size: 1.2rem;
+  .list-item {
+    padding: 5px;
   }
-
-  .filter-button {
-    padding: 8px 15px;
-  }
-
   .book-button {
-    padding: 8px;
+    padding: 5px;
+    margin-left: 20px;
+  }
+  .footer {
+    padding: 10px;
   }
 }

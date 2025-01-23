@@ -3,6 +3,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from './firebase';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
+import header from '../Home/Header';
 import "./style.css";
 
 function Login() {
@@ -28,6 +29,7 @@ function Login() {
 
     return (
       <div>
+        {header()}
         <div className="container">
             <h1>Login</h1><br/>
         <form onSubmit={handleSubmit}>

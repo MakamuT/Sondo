@@ -86,7 +86,8 @@ nav a:hover {
   text-decoration: none;
   color: #000;
   background-color: yellow;
-  height: 100%
+  border-radius: 5px;
+  padding: 5px;
 }
 
 .nav.open {
@@ -141,7 +142,7 @@ nav a:hover {
   border-radius: 15px;
   padding: 10px 20px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(5px);;
+  backdrop-filter: blur(5px);
   max-height: 150px;
   max-width: 600px;
   overflow-y: auto;
@@ -249,13 +250,30 @@ nav a:hover {
   gap: 5px;
   cursor: pointer;
 }
-
+ 
 .hamburger .bar {
   width: 25px;
   height: 3px;
   background-color: white;
 }
 
+/* Dark Mode*/
+.dark-btn{
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  margin-left: auto;
+}
+.dark-btn .fa-sun{
+  color: #ffdd57;
+}
+
+.dark{
+  background: gray;
+  color: #fff;
+}
 
 
 @media (max-width: 768px) {
@@ -264,13 +282,15 @@ nav a:hover {
   }
 
   nav {
+    display: flex;
     flex-direction: column;
-    max-height: 0;
+    opacity: 0;
     overflow: hidden;
     transition: max-height 0.3s ease-in-out;
   }
 
   .nav.open {
+    opacity: 1;
     max-height: 200px; /* Adjust depending on the content */
   }
   

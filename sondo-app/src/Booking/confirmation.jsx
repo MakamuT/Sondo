@@ -1,29 +1,34 @@
-import React, { useState } from "react";
-import { useLocation, useNavigate } from 'react-router-dom';
+import React from "react";
+import { useLocation, Link } from "react-router-dom";
 
-function Confirmation() {
+const ConfirmationPage = () => {
   const location = useLocation();
-  const  navigate = useNavigate();
-  const { bookedItem } = location.state || {};
+  const { bookingDetails } = location.state || {};
+
+  if (!bookingDetails) {
+    return <p>No booking details available. Please book a wheelchair first.</p>;
+  }
 
   return (
-    <div className="conpage">
+    <div className="confirmation-page">
       <h1>Booking Confirmation</h1>
-      {bookedItem ? (
-        <React.Fragment>
-          <p>
-            <strong>Item:</strong> {bookedItem.name}
-          </p>
-          <p>Your booking is confirmed! Thank you for using Sondo.</p>
-        </React.Fragment>
-      ) : (
-        <p>No booking details found.</p>
-      )}
-      <button className="btn" onClick={() => navigate("/home")}>
-        Home
-      </button>
+      <p>
+        <strong>Name:</strong> {bookingDetails.userName}
+      </p>
+      <p>
+        <strong>Email:</strong> {bookingDetails.userEmail}
+      </p>
+      <p>
+        <strong>Wheelchair:</strong> {bookingDetails.wheelchairName}
+      </p>
+      <p>
+        <strong>Booking Time:</strong> {bookingDetails.bookingTime}
+      </p>
+      <Link to="/booking">
+        <button className="back-button">Book Another Wheelchair</button>
+      </Link>
     </div>
   );
 };
 
-export default Confirmation;
+export default ConfirmationPage;
