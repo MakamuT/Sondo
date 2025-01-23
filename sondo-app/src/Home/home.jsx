@@ -18,53 +18,38 @@ function Home() {
   const fetchPlaces = async () => {
     if (!searchQuery.trim()) {
       alert("Please enter a location to search.");
-      return; // Exit the function
+      return;
     }
-
-    const apiKey = "APIKEYPLACEHOLDER";
-
-    // Constructing the API request URL using the search query
-    const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(
-      searchQuery
-    )}&key=${apiKey}`;
-
+  
     try {
-      // Sending the request via a proxy server to bypass CORS
-      const response = await fetch(`/proxy?url=${encodeURIComponent(url)}`);
-      
+      const response = await fetch(`http://localhost:5000/api/places?query=${encodeURIComponent(searchQuery)}`);
+  
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
       }
-
+  
       const data = await response.json();
-
-      console.log(data); // Debugging: log the response data for inspection
-
-      // validate response
-      if (data.results.length > 0) {
-        // Map over the results to create an array of malls with matching details
+  
+      if (data.results && data.results.length > 0) {
         const malls = data.results.map((place) => ({
-          id: place.place_id, // Unique identifier for the mall
-          name: place.name, // Name of the mall
+          id: place.place_id,
+          name: place.name,
           imgUrl: place.photos
-            ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${apiKey}` // Photo URL for the mall
-            : "", // Fallback image URL if no photo is available
-          address: place.formatted_address, // Address of mall
+            ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=APIKEYPLACEHOLDER`
+            : "",
+          address: place.formatted_address,
         }));
-
-        setFilteredMalls(malls); // Update the state with the fetched mall data
-
+        setFilteredMalls(malls);
       } else {
         alert("No results found. Try a different query.");
-        setFilteredMalls([]); // Clear the filtered malls state
+        setFilteredMalls([]);
       }
-
     } catch (error) {
-      // Log errors encountered during API request
       console.error("Error fetching places:", error);
-      alert("An error occurred while searching. Please try again.");
+      alert("An error occurred. Please try again.");
     }
   };
+  
 
   //handle navigation to the booking page for user selected mall. 
   // Redirect to the booking page with the mall ID as a parameter
