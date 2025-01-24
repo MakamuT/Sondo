@@ -17,6 +17,7 @@ const BookingPage = () => {
   const [wheelchairs, setWheelchairs] = useState([]);
   const [selectedWheelchair, setSelectedWheelchair] = useState(null);
   const [filters, setFilters] = useState("All");
+  const [mall, setMall] = useState("Mall of Africa"); // Default to "Mall of Africa"
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
@@ -28,11 +29,10 @@ const BookingPage = () => {
     const fetchWheelchairs = async () => {
       setLoading(true);
       try {
+        // Query wheelchairs for the selected mall and apply filters
         const q = query(
           collection(db, "wheelchairs"),
-          filters === "All"
-            ? where("available", "==", true)
-            : where("type", "==", filters)
+          where("mallname", "==", mall)
         );
         const querySnapshot = await getDocs(q);
         const data = querySnapshot.docs.map((doc) => ({
@@ -46,8 +46,9 @@ const BookingPage = () => {
         setLoading(false);
       }
     };
+
     fetchWheelchairs();
-  }, [db, filters]);
+  }, [db, mall]); // Re-run when the selected mall changes
 
   // Handle booking logic
   const handleBooking = async (wheelchairId) => {
@@ -73,11 +74,12 @@ const BookingPage = () => {
         userId: user.uid,
         wheelchairId,
         bookingTime,
+        mallname: mall,
       });
 
       // Mark the wheelchair as unavailable
       const wheelchairRef = doc(db, "wheelchairs", wheelchairId);
-      await setDoc(wheelchairRef, { available: false }, { merge: true });
+      await setDoc(wheelchairRef, { availability: false }, { merge: true });
 
       // Booking details to pass to confirmation page
       const bookingDetails = {
@@ -85,6 +87,7 @@ const BookingPage = () => {
         userEmail: user.email || "No Email",
         wheelchairName: wheelchairs.find((wc) => wc.id === wheelchairId).name,
         bookingTime,
+        mallname: mall,
       };
 
       // Navigate to confirmation page
@@ -93,7 +96,7 @@ const BookingPage = () => {
       // Update wheelchairs list
       setWheelchairs((prev) =>
         prev.map((wc) =>
-          wc.id === wheelchairId ? { ...wc, available: false } : wc
+          wc.id === wheelchairId ? { ...wc, availability: false } : wc
         )
       );
     } catch (error) {
@@ -110,10 +113,10 @@ const BookingPage = () => {
       <section className="hero">
         <img
           src="https://via.placeholder.com/250"
-          alt="Mall of Africa"
+          alt={mall}
           className="mall-image"
         />
-        <h2>Mall of Africa</h2>
+        <h2>{mall}</h2>
       </section>
 
       {/* Filter Buttons */}
@@ -142,7 +145,7 @@ const BookingPage = () => {
           wheelchairs.map((item) => (
             <div key={item.id} className="list-item">
               <span>{item.name}</span>
-              {item.available ? (
+              {item.availability ? (
                 <button
                   className="book-button"
                   onClick={() => handleBooking(item.id)}
