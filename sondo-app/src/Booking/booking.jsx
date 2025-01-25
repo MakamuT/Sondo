@@ -31,7 +31,7 @@ useEffect(() => {
     try {
       console.log("Fetching wheelchairs for mall:", mallName);
 
-      // Simplified query: Get all wheelchairs for the selected mall
+      // Get all wheelchairs for the selected mall
 const wheelchairQuery = query(
   collection(db, "wheelchairs"),
   where("mallname", "==", mallName)
@@ -61,7 +61,7 @@ const wheelchairQuery = query(
 
   
 
-  // Handle booking logic
+  // Booking logic
   const handleBooking = async (wheelchairId) => {
     if (!wheelchairId) {
       setMessage("Please select a wheelchair to book.");
@@ -87,7 +87,7 @@ const wheelchairQuery = query(
         bookingTime,
       });
 
-      // Mark the wheelchair as unavailable
+      // Mark wheelchair as unavailable
       const wheelchairRef = doc(db, "wheelchairs", wheelchairId);
       await setDoc(wheelchairRef, { availability: false }, { merge: true });
 

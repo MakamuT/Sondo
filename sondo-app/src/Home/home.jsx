@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredMalls, setFilteredMalls] = useState([]);
-  const [displayCount, setDisplayCount] = useState(5);
+  const [displayCount, setDisplayCount] = useState(4);
   const [loading, setLoading] = useState(false);
   const [debouncedQuery, setDebouncedQuery] = useState(searchQuery);
   const [error, setError] = useState(null);
@@ -47,7 +47,7 @@ function Home() {
           id: place.place_id,
           name: place.name,
           imgUrl: place.photos
-            ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=-api-key-`
+            ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=AIzaSyD0oaunDJdfbZj-Tv1VZRpIHXnSQTWAMT8`
             : "public/mall.jpg", // Fallback image in case of missing photo
           address: place.formatted_address,
         }));
@@ -81,7 +81,7 @@ function Home() {
 
   // Handle "Load More" functionality
   const handleLoadMore = () => {
-    setDisplayCount((prevCount) => prevCount + 5);
+    setDisplayCount((prevCount) => prevCount + 4);
   };
 
   return (
@@ -102,7 +102,7 @@ function Home() {
               onChange={handleInputChange}
             />
             <button aria-label="Search" onClick={() => fetchPlaces()}>Search</button>
-            <button onClick={() => setSearchQuery("")}>Clear</button>
+            <button aria-label="Clear search" onClick={() => setSearchQuery("")}>Clear</button>
           </div>
         </div>
 
@@ -141,12 +141,13 @@ function Home() {
             </div>
 
             {/************** "Load More" Button **************/}
-
-            {displayCount < filteredMalls.length && (
+            <div>
+              {displayCount < filteredMalls.length && (
               <button onClick={handleLoadMore} className="load-more">
                 Load More
               </button>
-            )}
+            )}</div>
+
           </div>
         )}
 

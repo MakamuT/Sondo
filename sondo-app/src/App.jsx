@@ -5,7 +5,7 @@ import LandingPage from "./Landing/Landingpage";
 import Register from "./Auth/Register";
 import Booking from "./Booking/booking";
 import Confirmation from "./Booking/Confirmation";
-import Home from "./Home/Home";
+import Home from "./Home/home";
 import { ToastContainer } from "react-toastify";
 
 function App() {
