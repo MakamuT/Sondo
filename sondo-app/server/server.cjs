@@ -10,7 +10,7 @@ app.use(
   })
 );
 
-const API_KEY = "AIzaSyD0oaunDJdfbZj-Tv1VZRpIHXnSQTWAMT8";
+const API_KEY = "api-key";
 
 
 app.get("/api/places", async (req, res) => {
