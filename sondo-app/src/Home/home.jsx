@@ -1,27 +1,38 @@
 import './home.css';
-import Header from '../Home/header';
-/*import Footer from './Footer';*/
-import { useState } from "react";
+import Header from './Header';
+import Footer from './Footer';
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredMalls, setFilteredMalls] = useState([]);
-  const [displayCount, setDisplayCount] = useState(5);
+  const [displayCount, setDisplayCount] = useState(4);
   const [loading, setLoading] = useState(false);
+  const [debouncedQuery, setDebouncedQuery] = useState(searchQuery);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  // Fetch places from the API
-  const fetchPlaces = async () => {
-    if (!searchQuery.trim()) {
-      alert("Please enter a location to search.");
+  // Debouncing the search query to avoid excessive API calls
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedQuery(searchQuery);
+    }, 500); // Adjust delay as needed
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  // Fetching places from the API
+  const fetchPlaces = useCallback(async () => {
+    if (!debouncedQuery.trim()) {
+      setError("Please enter a location to search.");
       return;
     }
 
     try {
-      setLoading(true); // Start loading spinner
+      setLoading(true);
+      setError(null); 
       const response = await fetch(
-        `http://localhost:5000/api/places?query=${encodeURIComponent(searchQuery)}`
+        `http://localhost:5000/api/places?query=${encodeURIComponent(debouncedQuery)}`
       );
 
       if (!response.ok) {
@@ -31,31 +42,36 @@ function Home() {
       const data = await response.json();
 
       if (data.results && data.results.length > 0) {
-        // Set all fetched malls to state
+        // Set state to the fetched mall results
         const malls = data.results.map((place) => ({
           id: place.place_id,
           name: place.name,
           imgUrl: place.photos
-            ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=API_KEY`
-            : "",
+            ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=AIzaSyD0oaunDJdfbZj-Tv1VZRpIHXnSQTWAMT8`
+            : "public/mall.jpg", // Fallback image in case of missing photo
           address: place.formatted_address,
         }));
         setFilteredMalls(malls);
       } else {
-        alert("No results found. Try a different query.");
+        setError("No results found. Try a different query.");
         setFilteredMalls([]);
       }
     } catch (error) {
       console.error("Error fetching places:", error);
-      alert("An error occurred. Please try again.");
+      setError(`An error occurred: ${error.message}`);
     } finally {
       setLoading(false); // Stop loader
     }
-  };
+  }, [debouncedQuery]);
+
+  // Trigger a fetch when debouncedQuery changes
+  useEffect(() => {
+    if (debouncedQuery) fetchPlaces();
+  }, [debouncedQuery, fetchPlaces]);
 
   // Navigate to booking page for the selected mall
-  const handleMallClick = (mallId) => {
-    navigate(`/booking/${mallId}`);
+  const handleMallClick = (mallName) => {
+    navigate("/booking", { state: { mallName } });
   };
 
   // Handle input changes for the search bar
@@ -65,7 +81,7 @@ function Home() {
 
   // Handle "Load More" functionality
   const handleLoadMore = () => {
-    setDisplayCount((prevCount) => prevCount + 5);
+    setDisplayCount((prevCount) => prevCount + 4);
   };
 
   return (
@@ -75,18 +91,24 @@ function Home() {
       <div className="home">
 
         {/********** Search Section ***************/}
-        
+
         <div className="search-container">
           <div className="search-box">
             <input
               type="text"
+              aria-label="Search for malls or cities"
               placeholder="Search by city or mall name..."
               value={searchQuery}
               onChange={handleInputChange}
             />
-            <button onClick={fetchPlaces}>Search</button>
+            <button aria-label="Search" onClick={() => fetchPlaces()}>Search</button>
+            <button aria-label="Clear search" onClick={() => setSearchQuery("")}>Clear</button>
           </div>
         </div>
+
+        {/***************** Error Handling ****************/}
+
+        {error && <div className="error-message">{error}</div>}
 
         {/***************** Loading Indicator *****************/}
 
@@ -105,7 +127,7 @@ function Home() {
                 <div
                   key={mall.id}
                   className="mall-card"
-                  onClick={() => handleMallClick(mall.id)}
+                  onClick={() => handleMallClick(mall.name)}
                 >
                   <img
                     src={mall.imgUrl}
@@ -119,13 +141,20 @@ function Home() {
             </div>
 
             {/************** "Load More" Button **************/}
-
-            {displayCount < filteredMalls.length && (
+            <div>
+              {displayCount < filteredMalls.length && (
               <button onClick={handleLoadMore} className="load-more">
                 Load More
               </button>
-            )}
+            )}</div>
+
           </div>
+        )}
+
+        {/***************** No Results Message **************/}
+
+        {filteredMalls.length === 0 && !loading && !error && (
+          <p>No results found. Try a different query.</p>
         )}
       </div>
 
