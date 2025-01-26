@@ -1,8 +1,10 @@
 import React from "react";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import "./Confirmation.css";
+
 const ConfirmationPage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { bookingDetails } = location.state || {};
 
   if (!bookingDetails) {
@@ -13,6 +15,11 @@ const ConfirmationPage = () => {
     const date = new Date(bookingTime);
     const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
     return date.toLocaleString('en-US', options);
+  };
+
+  const handleCancelBooking = () => {
+    alert('Your booking has been canceled.');
+    navigate("/home");
   };
 
   return (
@@ -30,9 +37,12 @@ const ConfirmationPage = () => {
       <p>
         <strong>Booking Time:</strong> {formatBookingTime(bookingDetails.bookingTime)}
       </p>
-      <Link to="/booking">
-        <button className="back-button">Book Another Wheelchair</button>
-      </Link>
+      <div className="button-container">
+        <Link to="/booking">
+          <button className="back-button">Book again</button>
+        </Link>
+        <button className="cancel-button" onClick={handleCancelBooking}>Cancel</button>
+      </div>
     </div>
   );
 };

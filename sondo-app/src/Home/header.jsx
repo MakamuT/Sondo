@@ -46,16 +46,16 @@ const Header = () => {
 
       <nav className={`nav ${isMenuOpen ? "open" : ""}`}>
         <Link to="/booking" onClick={closeMenu}>
-          Booking
+          About us
         </Link>
         <Link to="/home" onClick={closeMenu}>
           Home
         </Link>
-        <Link to="/" onClick={closeMenu}>
+        <Link to="/contact" onClick={closeMenu}>
           Contact
         </Link>
         <Link to="/login" onClick={closeMenu}>
-          Login
+          Log out
         </Link>
         <button
           className="dark-btn"

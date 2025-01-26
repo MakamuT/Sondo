@@ -10,6 +10,11 @@
   animation: AnimateBG 20s ease infinite;
 } */
 
+.qr-code {
+  margin: 20px auto;
+  text-align: center;
+}
+
 .confirmation-page {
     font-family: Arial, sans-serif;
     background-color: #f4f4f9;
@@ -18,7 +23,7 @@
     width: 80%;
     max-width: 600px;
     margin: 40px auto;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
     text-align: center;
   }
   
@@ -49,7 +54,6 @@
     cursor: pointer;
     text-decoration: none;
     margin-top: 20px;
-    display: inline-block;
   }
   
   .back-button:hover {
@@ -59,6 +63,29 @@
   .back-button:focus {
     outline: none;
   }
+
+  .button-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  .cancel-button {
+    background-color: #ff0000;
+    color: white;
+    font-size: 1.1em;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    margin-top: 20px;
+  }
+  
+  .cancel-button:hover {
+    background-color: #ff1a1a;
+  }
+  
   
   /* @-webkit-keyframes AnimateBG {
     0% {

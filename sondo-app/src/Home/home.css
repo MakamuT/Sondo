@@ -97,7 +97,7 @@ nav a {
 nav a:hover {
   text-decoration: none;
   color: #000;
-  background-color: yellow;
+  background-color: gold; 
   transform: scale(1.05);
 }
 
@@ -121,6 +121,7 @@ nav a:hover {
   background: rgba(255, 255, 255, 0.8);
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  align-items: center;
 }
 
 .search-box input {
@@ -149,6 +150,26 @@ nav a:hover {
 .search-box input:focus {
   border-color: #4CAF50;
   outline: none;
+}
+
+.location-icon {
+  color: #4CAF50;
+}
+
+.location-icon:hover {
+  color: #45a049;
+  cursor: pointer;
+  transform: scale(1.1); 
+}
+
+.clear-icon {
+  transition: color 0.2s ease; 
+  color: #4CAF50;
+}
+
+.clear-icon:hover {
+  color: #ff0000;
+  cursor: pointer;
 }
 
 .suggestions {
@@ -295,7 +316,7 @@ nav a:hover {
 
 .mall-card:hover {
   transform:rotateX('15deg');
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
   cursor: pointer;
 }
 
