@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./Booking.css";
+import"../Home/home.css"
+import Footer from "../Home/Footer";
 import {
   getFirestore,
   collection,
@@ -175,9 +177,8 @@ const wheelchairQuery = query(
       {message && <p className="message">{message}</p>}
 
       {/* Footer */}
-      <footer className="footer">
-        <p>&copy; 2024 Sondo. All rights reserved.</p>
-      </footer>
+      <Footer/>
+    
     </div>
   );
 };

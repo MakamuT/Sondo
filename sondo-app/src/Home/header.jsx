@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "./home.css";
-import "@fortawesome/fontawesome-free/css/all.min.css";
+import "./header.css";
+import { FaMoon, FaSun } from "react-icons/fa";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -62,7 +62,8 @@ const Header = () => {
           onClick={toggleTheme}
           aria-label="Toggle dark mode"
         >
-          <i className={`fas ${theme ? "fa-sun" : "fa-moon"}`}></i>
+          {theme ? <FaSun /> : <FaMoon />}
+
         </button>
       </nav>
     </header>

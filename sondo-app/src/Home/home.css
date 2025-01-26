@@ -6,12 +6,16 @@
 }
 
 body {
-  background: linear-gradient(to bottom, #1E88E5, #E3F2FD);
+  background: rgb(30,136,229);
+  background: linear-gradient(180deg, rgba(30,136,229,1) 0%, rgba(255,255,255,1) 30%); 
   color: #000;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 100%;
   min-height: 100vh;
+  margin: 0;
 }
 
 .container {
@@ -27,13 +31,15 @@ body {
 
 
 .home {
-  display: flex; 
+  flex: 1;
+  display: flex;
   flex-direction: column;
   justify-content: center; 
   align-items: center;
   width: 100%;
   max-width: 1200px;
   padding: 20px;
+  position: relative;
 }
 
 .header {
@@ -83,7 +89,7 @@ nav a {
   text-decoration: none;
   font-weight: 600;
   box-sizing: border-box;
-  padding: 5px;  /* Add default padding */
+  padding: 5px;
   border-radius: 5px;
   transition: all 0.2s ease;
 }
@@ -92,7 +98,7 @@ nav a:hover {
   text-decoration: none;
   color: #000;
   background-color: yellow;
-  transform: scale(1.05);  /* Scale effect instead of padding change */
+  transform: scale(1.05);
 }
 
 .nav.open {
@@ -114,7 +120,7 @@ nav a:hover {
   padding: 10px;
   background: rgba(255, 255, 255, 0.8);
   border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
 }
 
 .search-box input {
@@ -158,9 +164,9 @@ nav a:hover {
   max-height: 150px;
   max-width: 600px;
   overflow-y: auto;
-  position: absolute; /* Ensure it appears below the input */
+  position: absolute;
   z-index: 10;
-  width: 100%; /* Match the input width */
+  width: 100%; 
 }
 
 .suggestions li {
@@ -185,7 +191,7 @@ nav a:hover {
 
 .load-more {
   display: inline-block;
-  background-color: #4CAF50; /* Green background */
+  background-color: #4CAF50; 
   color: white;
   font-size: 16px;
   font-weight: bold;
@@ -194,13 +200,13 @@ nav a:hover {
   cursor: pointer;
   text-align: center;
   border: none;
-  margin: 20px auto; /* Center the button horizontally */
-  transition: background-color 0.3s, transform 0.2s ease; /* Smooth transition for hover effects */
+  margin: 20px auto; 
+  transition: background-color 0.3s, transform 0.2s ease; 
 }
 
 .load-more:hover {
-  background-color: #45a049; /* Darker green on hover */
-  transform: scale(1.05); /* Slightly enlarge the button on hover */
+  background-color: #45a049; 
+  transform: scale(1.05); 
 }
 
 .load-more:focus {
@@ -262,8 +268,8 @@ nav a:hover {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   text-align: center;
   background: #fff;
-  opacity: 0; /* Initially hidden */
-  animation: fadeInScale 0.5s ease-out forwards; /* Apply animation on load */
+  opacity: 0;
+  animation: fadeInScale 0.5s ease-out forwards; /*  animation when loading */
   transition: transform 0.2s ease, box-shadow 0.3s ease;
 }
 
@@ -289,7 +295,7 @@ nav a:hover {
 
 .mall-card:hover {
   transform:rotateX('15deg');
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Enhance shadow for hover */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   cursor: pointer;
 }
 
@@ -356,7 +362,8 @@ nav a:hover {
 }
 
 .dark{
-  background: gray;
+  background: rgb(30,136,229);
+  background: linear-gradient(180deg, rgba(30,136,229,1) 0%, rgba(0,0,0,1) 30%); 
   color: #fff;
 }
 
@@ -392,12 +399,16 @@ nav a:hover {
 ul{
   list-style: none;
 }
-.footer{
-  padding: 20px 0;
-  margin: 0;
-  width: 90vw;
-    background-color: #094964;
-  }
+
+.footer {
+  width: 100vw;
+  position: relative;
+  bottom: 0; 
+  padding: 20px;
+  color: white;
+  text-align: center;
+  box-sizing: border-box;
+}
 
   .footer-col{
     width: 25%;
