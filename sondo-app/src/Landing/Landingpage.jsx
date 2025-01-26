@@ -1,4 +1,3 @@
-/* LandingPage.js */
 import React from "react";
 import "./LandingPage.css";
 import Header from "../Home/Header";
