@@ -183,4 +183,4 @@ const wheelchairQuery = query(
   );
 };
 
-export default BookingPage;
+export default BookingPage; 
