@@ -1,0 +1,114 @@
+body {
+  font-family: Arial, sans-serif;
+  min-height: 100vh; /* Ensure the body takes at least the full viewport height */
+  display: flex;
+  flex-direction: column;
+}
+
+.booking-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;  /*Ensure the page is at least as tall as the viewport*/
+}
+
+.hero {
+  margin-top: 40px;
+  text-align: center;
+  padding: 20px;
+}
+
+.hero img {
+  margin-bottom: -80px;
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.filters {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 15px 10px;
+}
+
+.filter-button {
+  padding: 10px 20px;
+  margin: 5px;
+  border: 1px solid #4CAF50;
+  background-color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.filter-button.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.item-list {
+  display: flex;
+  color: black;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  margin: 0 auto;
+  max-width: 50rem;
+  }
+
+.list-item {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  text-align: center;
+}
+
+
+.book-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+  margin-left: 35px ;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.book-button:hover {
+  background-color: #45a049;
+}
+
+.unavailable {
+  color: red;
+  font-weight: bold;
+  text-align: right;
+  margin-left: 5px;
+}
+
+
+.footer {
+  margin-top: auto; /* Pushes the footer to the bottom of the page */
+  text-align: center;
+  padding: 15px 20px;
+  background-color: #4CAF50;
+  color: white;
+  width: 100vw;
+}
+
+/*For mobile phones: */
+@media only screen and (max-width: 600px) {
+  .item-list {
+    padding: 10px;
+  }
+  .list-item {
+    padding: 5px;
+  }
+  .book-button {
+    padding: 5px;
+    margin-left: 20px;
+  }
+  .footer {
+    padding: 10px;
+  }
+}
