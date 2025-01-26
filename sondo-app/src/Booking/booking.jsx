@@ -93,7 +93,7 @@ const wheelchairQuery = query(
 
       // Booking details to pass to confirmation page
       const bookingDetails = {
-        userName: user.displayName || "Anonymous",
+        userName: user.displayName,
         userEmail: user.email || "No Email",
         wheelchairName: wheelchairs.find((wc) => wc.id === wheelchairId).name,
         mallName,
