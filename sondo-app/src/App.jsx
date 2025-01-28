@@ -6,7 +6,10 @@ import Register from "./Auth/Register";
 import Booking from "./Booking/booking";
 import Confirmation from "./Booking/Confirmation";
 import Home from "./Home/home";
+import Contact from "./Contact/Contact";
 import { ToastContainer } from "react-toastify";
+import FAQ from "./Contact/Faq";
+import Terms from "./Contact/Terms";
 
 function App() {
   return (
@@ -17,6 +20,9 @@ function App() {
               {/* Default route for "/" */}
               <Route path="/" element={<LandingPage />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/faq" element={<FAQ />} />
+              <Route path="/contact" element={<Contact />} />
               <Route path="/home" element={<Home />} />
               <Route path="/booking" element={<Booking />} />
               <Route path="/confirmation" element={ <Confirmation /> }/>
