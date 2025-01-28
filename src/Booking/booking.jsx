@@ -1,48 +1,44 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./Booking.css";
+import"../Home/home.css"
+import Footer from "../Home/Footer";
 import {
-  getFirestore,
-  collection,
-  getDocs,
-  query,
-  where,
-  doc,
-  setDoc,
+  getFirestore, collection, getDocs,
+  query, where, doc, setDoc,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import Header from "../Home/Header";
 
+
 const BookingPage = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const { mallName } = location.state || {};
-  const [wheelchairs, setWheelchairs] = useState([]);
-  const [filters, setFilters] = useState("All");
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
-  const db = getFirestore();
-  const auth = getAuth();
+const location = useLocation();
+const navigate = useNavigate();
+const { mallName } = location.state || {};
+const [wheelchairs, setWheelchairs] = useState([]);
+const [filters, setFilters] = useState("All");
+const [loading, setLoading] = useState(false);
+const [message, setMessage] = useState("");
+const db = getFirestore();
+const auth = getAuth();
 
 // Fetch wheelchairs based on the selected mall name
 useEffect(() => {
-  const fetchWheelchairs = async () => {
-    setLoading(true);
-    try {
-      console.log("Fetching wheelchairs for mall:", mallName);
+const fetchWheelchairs = async () => {
+setLoading(true);
+  try {
+    console.log("Fetching wheelchairs for mall:", mallName);
 
-      // Get all wheelchairs for the selected mall
+// Get all wheelchairs for the selected mall
 const wheelchairQuery = query(
-  collection(db, "wheelchairs"),
-  where("mallname", "==", mallName)
+collection(db, "wheelchairs"),
+where("mallname", "==", mallName)
 );
-
-
       const querySnapshot = await getDocs(wheelchairQuery);
       console.log("Query Snapshot:", querySnapshot.docs);
 
       // Map the results to an array of wheelchair objects
-      const data = querySnapshot.docs.map((doc) => ({
+    const data = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
@@ -59,9 +55,7 @@ const wheelchairQuery = query(
   fetchWheelchairs();
 }, [mallName, db]);
 
-  
-
-  // Booking logic
+// Handle booking a wheelchair
   const handleBooking = async (wheelchairId) => {
     if (!wheelchairId) {
       setMessage("Please select a wheelchair to book.");
@@ -79,12 +73,12 @@ const wheelchairQuery = query(
 
     try {
       // Save booking to Firestore
-      const bookingRef = doc(collection(db, "bookings"));
-      const bookingTime = new Date().toISOString();
-      await setDoc(bookingRef, {
-        userId: user.uid,
-        wheelchairId,
-        bookingTime,
+  const bookingRef = doc(collection(db, "bookings"));
+  const bookingTime = new Date().toISOString();
+    await setDoc(bookingRef, {
+      userId: user.uid,
+      wheelchairId,
+      bookingTime,
       });
 
       // Mark wheelchair as unavailable
@@ -93,7 +87,7 @@ const wheelchairQuery = query(
 
       // Booking details to pass to confirmation page
       const bookingDetails = {
-        userName: user.displayName || "Anonymous",
+        userName: user.displayName,
         userEmail: user.email || "No Email",
         wheelchairName: wheelchairs.find((wc) => wc.id === wheelchairId).name,
         mallName,
@@ -120,12 +114,9 @@ const wheelchairQuery = query(
   return (
     <div className="booking-page">
       <Header />
-
       <div className="mall-image-section">
-        <img
-        src={`https://via.placeholder.com/600x300?text=${mallName || "Selected Mall"}`}
-        alt={mallName || "Mall"}
-        className="mall-image"/>
+        <img src={`public/mall.jpg`}
+        alt={mallName || "Mall"} className="mall-image"/>
         <h2>{mallName || "Mall"}</h2>
         </div>
 
@@ -170,14 +161,12 @@ const wheelchairQuery = query(
   )}
 </div>
 
-
       {/* Message Display */}
       {message && <p className="message">{message}</p>}
 
       {/* Footer */}
-      <footer className="footer">
-        <p>&copy; 2024 Sondo. All rights reserved.</p>
-      </footer>
+      <Footer/>
+    
     </div>
   );
 };

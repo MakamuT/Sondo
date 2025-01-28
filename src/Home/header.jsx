@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import "./home.css";
-import "@fortawesome/fontawesome-free/css/all.min.css";
+import "./header.css";
+import { FaMoon, FaSun } from "react-icons/fa";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -46,23 +46,24 @@ const Header = () => {
 
       <nav className={`nav ${isMenuOpen ? "open" : ""}`}>
         <Link to="/booking" onClick={closeMenu}>
-          Booking
+          About us
         </Link>
         <Link to="/home" onClick={closeMenu}>
           Home
         </Link>
-        <Link to="/" onClick={closeMenu}>
+        <Link to="/contact" onClick={closeMenu}>
           Contact
         </Link>
         <Link to="/login" onClick={closeMenu}>
-          Login
+          Log out
         </Link>
         <button
           className="dark-btn"
           onClick={toggleTheme}
           aria-label="Toggle dark mode"
         >
-          <i className={`fas ${theme ? "fa-sun" : "fa-moon"}`}></i>
+          {theme ? <FaSun /> : <FaMoon />}
+
         </button>
       </nav>
     </header>
